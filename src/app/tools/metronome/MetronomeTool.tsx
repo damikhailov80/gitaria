@@ -21,7 +21,6 @@ type SignatureId = (typeof signatures)[number]["id"];
 const sounds: { id: ClickSound; label: string }[] = [
   { id: "click", label: "Клик" },
   { id: "wood", label: "Дерево" },
-  { id: "voice", label: "Голос" },
 ];
 
 type Settings = { bpm: number; signature: SignatureId; sound: ClickSound };

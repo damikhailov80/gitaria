@@ -37,7 +37,6 @@ src/components/             общие компоненты (Header, Logo, Icon,
 src/lib/types.ts            типы по модели данных из REQUIREMENTS.md
 src/lib/mock/               моки: курс, материалы, школа, пользователь
 src/lib/audio/              pitch.ts (частота → нота/центы), tunings.ts, metronome.ts (планировщик)
-public/sounds/              счёт для метронома «Голос» (macOS `say -v Milena`)
 design/                     PNG-экраны макета из Claude Design — эталон вёрстки
 ```
 
