@@ -30,21 +30,35 @@ export function Tuner() {
 
   const tuning = tunings[instrument].find((t) => t.id === tuningId) ?? tunings[instrument][0];
 
-  const audioRef = useRef<{ ctx: AudioContext; stream: MediaStream; raf: number } | null>(null);
+  const audioRef = useRef<{ ctx: AudioContext; stream: MediaStream; raf: number; cleanup: () => void } | null>(
+    null,
+  );
+  /** Номер последнего запуска: устаревший запуск (ушли со страницы, выключили) не должен включить микрофон */
+  const startIdRef = useRef(0);
   const settingsRef = useRef({ strings: tuning.strings, manualString });
   const historyRef = useRef<number[]>([]);
-  const inTuneSinceRef = useRef<{ index: number; since: number } | null>(null);
+  /** До этого момента (performance.now) микрофон не слушаем — играет сигнал «настроено» */
+  const mutedUntilRef = useRef(0);
+  const inTuneSinceRef = useRef<{ index: number; since: number; confirmed: boolean } | null>(null);
 
   useEffect(() => {
     settingsRef.current = { strings: tuning.strings, manualString };
   }, [tuning, manualString]);
 
-  useEffect(() => () => stopMic(), []);
+  // Микрофон включается сразу при открытии тюнера.
+  useEffect(() => {
+    void startMic();
+    return () => stopMic();
+    // Только при монтировании: startMic/stopMic работают через ref-ы.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function stopMic() {
+    startIdRef.current++;
     const audio = audioRef.current;
     if (!audio) return;
     cancelAnimationFrame(audio.raf);
+    audio.cleanup();
     audio.stream.getTracks().forEach((t) => t.stop());
     void audio.ctx.close();
     audioRef.current = null;
@@ -55,6 +69,7 @@ export function Tuner() {
       setMic("unsupported");
       return;
     }
+    const startId = ++startIdRef.current;
     setMic("starting");
     let stream: MediaStream;
     try {
@@ -62,11 +77,28 @@ export function Tuner() {
         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
       });
     } catch {
-      setMic("denied");
+      if (startId === startIdRef.current) setMic("denied");
+      return;
+    }
+    if (startId !== startIdRef.current) {
+      stream.getTracks().forEach((t) => t.stop());
       return;
     }
 
     const ctx = new AudioContext();
+    // При открытии страницы по прямой ссылке браузер может не дать запустить звук
+    // без действия пользователя — тогда запускаем его по первому клику или нажатию клавиши.
+    const resume = () => void ctx.resume();
+    const cleanup = () => {
+      window.removeEventListener("pointerdown", resume);
+      window.removeEventListener("keydown", resume);
+    };
+    if (ctx.state === "suspended") {
+      void ctx.resume();
+      window.addEventListener("pointerdown", resume, { once: true });
+      window.addEventListener("keydown", resume, { once: true });
+    }
+
     const analyser = ctx.createAnalyser();
     analyser.fftSize = 4096;
     ctx.createMediaStreamSource(stream).connect(analyser);
@@ -77,12 +109,13 @@ export function Tuner() {
       analyser.getFloatTimeDomainData(buffer);
       const rms = Math.sqrt(buffer.reduce((sum, v) => sum + v * v, 0) / buffer.length);
       const [pitch, clarity] = detector.findPitch(buffer, ctx.sampleRate);
-      if (rms > MIN_RMS && clarity > MIN_CLARITY && pitch > 50 && pitch < 1200) {
+      const muted = performance.now() < mutedUntilRef.current;
+      if (!muted && rms > MIN_RMS && clarity > MIN_CLARITY && pitch > 50 && pitch < 1200) {
         handlePitch(pitch);
       }
       audioRef.current!.raf = requestAnimationFrame(tick);
     };
-    audioRef.current = { ctx, stream, raf: requestAnimationFrame(tick) };
+    audioRef.current = { ctx, stream, raf: requestAnimationFrame(tick), cleanup };
     setMic("on");
   }
 
@@ -101,11 +134,21 @@ export function Tuner() {
     setReading({ frequency, stringIndex, cents });
 
     // Струна считается настроенной, если полсекунды держится в допуске.
+    // В этот момент звучит сигнал — один раз, пока струна не выйдет из допуска.
     const now = performance.now();
     if (Math.abs(cents) <= IN_TUNE_CENTS) {
       const since = inTuneSinceRef.current;
-      if (since?.index !== stringIndex) inTuneSinceRef.current = { index: stringIndex, since: now };
-      else if (now - since.since > 500) setTuned((prev) => (prev.has(stringIndex) ? prev : new Set(prev).add(stringIndex)));
+      if (since?.index !== stringIndex) {
+        inTuneSinceRef.current = { index: stringIndex, since: now, confirmed: false };
+      } else if (!since.confirmed && now - since.since > 500) {
+        since.confirmed = true;
+        setTuned((prev) => (prev.has(stringIndex) ? prev : new Set(prev).add(stringIndex)));
+        if (audioRef.current) {
+          // Микрофон слышит сигнал из динамика и сбивает показания — пропускаем это время.
+          const ms = playInTuneChime(audioRef.current.ctx) * 1000;
+          mutedUntilRef.current = performance.now() + ms;
+        }
+      }
     } else {
       inTuneSinceRef.current = null;
     }
@@ -256,6 +299,29 @@ export function Tuner() {
       </section>
     </div>
   );
+}
+
+/**
+ * Короткий сигнал «струна настроена».
+ * Возвращает, сколько секунд не слушать микрофон: длительность сигнала,
+ * задержка вывода звука (у Bluetooth-наушников заметная) и запас на эхо.
+ */
+function playInTuneChime(ctx: AudioContext): number {
+  const start = ctx.currentTime;
+  [1568, 2093].forEach((freq, i) => {
+    const t = start + i * 0.09;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.25, t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.26);
+  });
+  return 0.35 + (ctx.baseLatency || 0) + (ctx.outputLatency || 0) + 0.15;
 }
 
 /** Точка на окружности с центром (280, 290); угол 0° — вверх. */
