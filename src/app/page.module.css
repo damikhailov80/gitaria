@@ -1,0 +1,227 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 64px;
+  padding-top: 48px;
+}
+
+.title {
+  font-size: 64px;
+  line-height: 1.1;
+  max-width: 600px;
+}
+
+.lead {
+  margin-top: 32px;
+  max-width: 540px;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.text {
+  margin-top: 24px;
+  max-width: 600px;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--color-text-body);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 40px;
+}
+
+.heroSide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.photo {
+  width: 240px;
+  height: auto;
+  border-radius: 120px 120px 16px 16px;
+  margin-bottom: 20px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  list-style: none;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  row-gap: 6px;
+}
+
+.marker {
+  grid-row: span 2;
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+  border-radius: 50%;
+}
+
+.accent {
+  background: var(--color-accent);
+}
+
+.green {
+  background: var(--color-accent-2);
+}
+
+.ring {
+  border: 3px solid var(--color-accent-2);
+}
+
+.timelineDate {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.timelineText {
+  font-size: 16px;
+  color: var(--color-text-body);
+}
+
+.ways {
+  padding-top: 88px;
+}
+
+.sectionTitle {
+  font-size: 48px;
+}
+
+.wayGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.wayCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 48px;
+  border-radius: 40px;
+}
+
+.offline {
+  background: var(--color-accent-100);
+}
+
+.online {
+  background: var(--color-accent-2-100);
+}
+
+.onlineTag {
+  color: var(--color-accent-2-800);
+}
+
+.wayTitle {
+  margin-top: 28px;
+  font-size: 32px;
+}
+
+.wayText {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-text-body);
+}
+
+.checks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  list-style: none;
+  font-size: 17px;
+}
+
+.checks li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.offline .checks svg {
+  color: var(--color-accent-700);
+}
+
+.online .checks svg {
+  color: var(--color-accent-2-700);
+}
+
+.wayCard .actions {
+  margin-top: 32px;
+}
+
+.socials {
+  padding-top: 64px;
+}
+
+@media (max-width: 1080px) {
+  .wayGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-top: 24px;
+  }
+
+  .photo {
+    width: 200px;
+  }
+
+  .title {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 38px;
+  }
+
+  .lead,
+  .text {
+    font-size: 17px;
+  }
+
+  .sectionTitle {
+    font-size: 36px;
+  }
+
+  .ways {
+    padding-top: 64px;
+  }
+
+  .wayCard {
+    padding: 28px 22px;
+    border-radius: var(--radius-lg);
+  }
+
+  .wayTitle {
+    font-size: 26px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+}

@@ -1,0 +1,95 @@
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.formSide {
+  padding: 48px 64px 64px max(64px, calc((100vw - var(--page-max)) / 2 + 64px));
+}
+
+.title {
+  margin-top: 64px;
+  font-size: 64px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 520px;
+  margin-top: 36px;
+}
+
+.form :global(.segmented) {
+  align-self: flex-start;
+}
+
+.forgot {
+  font-size: 17px;
+}
+
+.art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-accent-2-100);
+}
+
+.circleTop {
+  position: absolute;
+  top: -22%;
+  right: -12%;
+  width: 66%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-accent-2-200);
+}
+
+.circleBottom {
+  position: absolute;
+  bottom: -14%;
+  left: 9%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-accent-200);
+}
+
+.artContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.artText {
+  max-width: 300px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .formSide {
+    padding: 24px var(--page-gutter) 48px;
+  }
+
+  .art {
+    display: none;
+  }
+
+  .title {
+    margin-top: 40px;
+    font-size: 44px;
+  }
+}

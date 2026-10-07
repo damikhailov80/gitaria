@@ -1,0 +1,246 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 470px) minmax(0, 720px);
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+  padding-top: 56px;
+  padding-bottom: 80px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 72px;
+}
+
+.intro {
+  margin: 24px 0 40px;
+  max-width: 460px;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--color-text-body);
+}
+
+.controls :global(.segmented) {
+  margin-top: 16px;
+}
+
+.controls :global(.segmented) label {
+  padding: 12px 22px;
+}
+
+.soundLabel {
+  margin-top: 36px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 40px 56px;
+  border-radius: 64px;
+  background: var(--color-surface);
+}
+
+.beats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.dot {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--color-accent-2-300);
+  transition: background-color 0.05s;
+}
+
+.dotActive {
+  background: var(--color-accent);
+}
+
+.tempo {
+  display: grid;
+  grid-template-columns: 76px 1fr 76px;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 64px;
+}
+
+.round {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 1px solid var(--color-divider);
+  border-radius: 50%;
+  background: var(--color-neutral-200);
+  color: var(--color-text);
+}
+
+.round:hover {
+  background: var(--color-neutral-100);
+}
+
+.bpm {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 140px;
+  line-height: 0.9;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tempoLabel {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.slider {
+  width: 100%;
+  max-width: 600px;
+  height: 28px;
+  margin-top: 48px;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-divider);
+  background: linear-gradient(
+    to right,
+    var(--color-accent) var(--fill),
+    var(--color-neutral-100) var(--fill)
+  );
+}
+
+.slider::-moz-range-track {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-divider);
+  background: var(--color-neutral-100);
+}
+
+.slider::-moz-range-progress {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -8px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.start {
+  min-width: 190px;
+  min-height: 68px;
+  font-size: 24px;
+}
+
+.tap {
+  min-width: 106px;
+  min-height: 68px;
+  font-size: 24px;
+  background: var(--color-neutral-200);
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 44px;
+  }
+
+  .intro {
+    margin-bottom: 28px;
+  }
+
+  .controls :global(.segmented) label {
+    padding: 10px 16px;
+  }
+
+  .panel {
+    padding: 36px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .beats {
+    gap: 12px;
+  }
+
+  .dot {
+    width: 36px;
+    height: 36px;
+  }
+
+  .tempo {
+    grid-template-columns: 56px 1fr 56px;
+    gap: 8px;
+    margin-top: 40px;
+  }
+
+  .round {
+    width: 56px;
+    height: 56px;
+  }
+
+  .bpm {
+    font-size: 96px;
+  }
+
+  .tempoLabel {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .start,
+  .tap {
+    min-height: 60px;
+    font-size: 20px;
+  }
+
+  .start {
+    min-width: 150px;
+  }
+}
