@@ -1,4 +1,4 @@
-export type ClickSound = "click" | "wood" | "voice";
+export type ClickSound = "click" | "wood";
 
 export type MetronomeOptions = {
   bpm: number;
@@ -10,7 +10,6 @@ export type MetronomeOptions = {
 
 const LOOKAHEAD_MS = 25;
 const SCHEDULE_AHEAD_S = 0.1;
-const VOICE_COUNT = 6;
 
 /**
  * Метроном с lookahead-планировщиком: таймер раз в 25 мс ставит звуки
@@ -21,7 +20,6 @@ export class Metronome {
   private timer: ReturnType<typeof setInterval> | null = null;
   private nextNoteTime = 0;
   private beat = 0;
-  private voice: { buffer: AudioBuffer; offset: number }[] = [];
   private visualTimers = new Set<ReturnType<typeof setTimeout>>();
 
   constructor(private options: MetronomeOptions) {}
@@ -32,14 +30,12 @@ export class Metronome {
 
   update(options: Partial<MetronomeOptions>): void {
     this.options = { ...this.options, ...options };
-    if (options.sound === "voice") void this.loadVoice();
   }
 
   async start(): Promise<void> {
     if (this.running) return;
     this.ctx ??= new AudioContext();
     await this.ctx.resume();
-    if (this.options.sound === "voice") await this.loadVoice();
     this.beat = 0;
     this.nextNoteTime = this.ctx.currentTime + 0.05;
     this.timer = setInterval(() => this.schedule(), LOOKAHEAD_MS);
@@ -90,31 +86,7 @@ export class Metronome {
         return playClick(ctx, time, accent);
       case "wood":
         return playWood(ctx, time, accent);
-      case "voice": {
-        const sample = this.voice[beat % VOICE_COUNT];
-        if (!sample) return playClick(ctx, time, accent);
-        const source = ctx.createBufferSource();
-        source.buffer = sample.buffer;
-        const gain = ctx.createGain();
-        gain.gain.value = accent ? 1 : 0.75;
-        source.connect(gain).connect(ctx.destination);
-        // Сдвигаем начало на тишину в записи, чтобы слог попадал в долю.
-        source.start(time, sample.offset);
-        return;
-      }
     }
-  }
-
-  private async loadVoice(): Promise<void> {
-    if (this.voice.length || !this.ctx) return;
-    const ctx = this.ctx;
-    this.voice = await Promise.all(
-      Array.from({ length: VOICE_COUNT }, async (_, i) => {
-        const res = await fetch(`/sounds/voice-${i + 1}.m4a`);
-        const buffer = await ctx.decodeAudioData(await res.arrayBuffer());
-        return { buffer, offset: leadingSilence(buffer) };
-      }),
-    );
   }
 }
 
@@ -146,13 +118,6 @@ function playWood(ctx: AudioContext, time: number, accent: boolean): void {
   source.start(time);
 }
 
-function leadingSilence(buffer: AudioBuffer, threshold = 0.02): number {
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < data.length; i++) {
-    if (Math.abs(data[i]) > threshold) return i / buffer.sampleRate;
-  }
-  return 0;
-}
 
 /** Темп по интервалам между нажатиями Tap (среднее по последним). */
 export function tapTempo(taps: number[], min = 30, max = 300): number | null {
