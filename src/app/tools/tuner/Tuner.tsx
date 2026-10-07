@@ -209,21 +209,23 @@ export function Tuner() {
         <label className="sr-only" htmlFor="tuning">
           Строй
         </label>
-        <select
-          id="tuning"
-          className={`input ${styles.select}`}
-          value={tuning.id}
-          onChange={(e) => {
-            setTuningId(e.target.value);
-            resetStrings();
-          }}
-        >
-          {tunings[instrument].map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.label}
-            </option>
-          ))}
-        </select>
+        <div className={styles.selectWrap}>
+          <select
+            id="tuning"
+            className={`input ${styles.select}`}
+            value={tuning.id}
+            onChange={(e) => {
+              setTuningId(e.target.value);
+              resetStrings();
+            }}
+          >
+            {tunings[instrument].map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <button
           type="button"
