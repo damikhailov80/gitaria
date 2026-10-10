@@ -1,5 +1,6 @@
 /*
- * Дизайн-токены Gitaria (дизайн-система «Organic» из макета).
+ * Дизайн-токены Gitaria (дизайн-система «Organic» из макета,
+ * акцентный цвет приведён к логотипу — public/logo.svg).
  * Все цвета в компонентах — только через эти переменные.
  */
 :root {
@@ -14,15 +15,16 @@
   --color-neutral-800: #33302b;
   --color-neutral-900: #201e1d;
 
-  --color-accent-100: #fff2eb;
-  --color-accent-200: #ffe1d0;
-  --color-accent-300: #f0b48e;
-  --color-accent-400: #dc8f5c;
-  --color-accent-500: #c67139;
-  --color-accent-600: #a95d2a;
-  --color-accent-700: #8c491a;
-  --color-accent-800: #643312;
-  --color-accent-900: #42210b;
+  /* Акцент — красный сердца из логотипа (500 = #bb3723) */
+  --color-accent-100: #fdf0ec;
+  --color-accent-200: #f9dcd3;
+  --color-accent-300: #eeb3a4;
+  --color-accent-400: #d9705b;
+  --color-accent-500: #bb3723;
+  --color-accent-600: #a02c1b;
+  --color-accent-700: #842316;
+  --color-accent-800: #5f1a10;
+  --color-accent-900: #3d110a;
 
   --color-accent-2-100: #f0fae1;
   --color-accent-2-200: #e1eecc;

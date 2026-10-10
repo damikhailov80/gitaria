@@ -38,6 +38,7 @@ src/lib/types.ts            типы по модели данных из REQUIRE
 src/lib/mock/               моки: курс, материалы, школа, пользователь
 src/lib/audio/              pitch.ts (частота → нота/центы), tunings.ts, metronome.ts (планировщик)
 design/                     PNG-экраны макета из Claude Design — эталон вёрстки
+public/logo*.svg            логотип: полный, знак, надпись (векторизован из исходного JPEG); favicon/icon/apple-icon — в src/app/
 ```
 
 ## Правила
