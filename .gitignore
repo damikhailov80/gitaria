@@ -43,3 +43,6 @@ next-env.d.ts
 
 # prisma client (npx prisma generate)
 /src/generated/
+
+# скриншоты и логи Playwright MCP
+/.playwright-mcp/

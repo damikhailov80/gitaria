@@ -86,7 +86,11 @@ async function AccountContent() {
             <ul className={styles.files}>
               {favorites.map((m) => (
                 <li key={m.id}>
-                  <a href={m.file ?? "/materials"} {...(m.file && { target: "_blank", rel: "noopener" })}>
+                  <a
+                    href={m.youtubeId ? `https://www.youtube.com/watch?v=${m.youtubeId}` : (m.file ?? "/materials")}
+                    target="_blank"
+                    rel="noopener"
+                  >
                     <span>{m.title}</span>
                     <span className={styles.fileKind}>{m.type === "VIDEO" ? "Видео" : "PDF"}</span>
                   </a>
