@@ -28,8 +28,9 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  sessions Session[]
-  accounts Account[]
+  sessions          Session[]
+  accounts          Account[]
+  favoriteMaterials FavoriteMaterial[]
 
   @@map("user")
 }
@@ -79,4 +80,15 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+/// Избранные материалы. materialId — id из src/lib/mock/materials (материалы пока не в базе)
+model FavoriteMaterial {
+  userId     String
+  materialId String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, materialId])
+  @@map("favorite_material")
 }

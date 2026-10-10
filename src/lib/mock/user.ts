@@ -15,9 +15,3 @@ export const enrollment: Enrollment = {
   completedLessons: 7,
   currentLessonSlug: "urok-8",
 };
-
-export const recentMaterials = [
-  { id: "r1", title: "Упражнения, неделя 2", kind: "PDF", href: "#" },
-  { id: "r2", title: "Таблица аккордов", kind: "PDF", href: "#" },
-  { id: "r3", title: "Перебор «четвёрка»", kind: "PDF", href: "#" },
-];

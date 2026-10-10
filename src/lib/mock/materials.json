@@ -1,0 +1,38 @@
+[
+  {
+    "id": "simply-guitar-book-one",
+    "slug": "simply-guitar-book-one",
+    "title": "Simply Guitar Book One",
+    "author": "Vincent Lindsey-Clark, Alexander MacDonald",
+    "pages": 46,
+    "file": "/materials/pdf/simply-guitar-book-one.pdf",
+    "cover": "/materials/covers/simply-guitar-book-one.jpg"
+  },
+  {
+    "id": "guitar-from-the-very-beginning",
+    "slug": "guitar-from-the-very-beginning",
+    "title": "Гитара с самого начала",
+    "author": "Виктория Куликовская",
+    "pages": 34,
+    "file": "/materials/pdf/guitar-from-the-very-beginning.pdf",
+    "cover": "/materials/covers/guitar-from-the-very-beginning.jpg"
+  },
+  {
+    "id": "kids-jazz-album-1",
+    "slug": "kids-jazz-album-1",
+    "title": "Детский джазовый альбом. Выпуск 1",
+    "author": "Александр Виницкий",
+    "pages": 26,
+    "file": "/materials/pdf/kids-jazz-album-1.pdf",
+    "cover": "/materials/covers/kids-jazz-album-1.jpg"
+  },
+  {
+    "id": "first-class-guitar",
+    "slug": "first-class-guitar",
+    "title": "Gitara pierwsza klasa / First Class Guitar",
+    "author": "Tatiana Stachak",
+    "pages": 94,
+    "file": "/materials/pdf/first-class-guitar.pdf",
+    "cover": "/materials/covers/first-class-guitar.jpg"
+  }
+]

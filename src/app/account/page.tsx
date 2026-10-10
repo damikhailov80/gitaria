@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { db } from "@/lib/db";
 import { allLessons, course } from "@/lib/mock/course";
-import { enrollment, recentMaterials } from "@/lib/mock/user";
+import { materials } from "@/lib/mock/materials";
+import { enrollment } from "@/lib/mock/user";
 import { getCurrentUser } from "@/lib/session";
 import styles from "./page.module.css";
 
@@ -21,6 +23,13 @@ async function AccountContent() {
   const user = await getCurrentUser();
   const current = allLessons.find((l) => l.slug === enrollment.currentLessonSlug)!;
   const progress = (enrollment.completedLessons / allLessons.length) * 100;
+  const favoriteRows = await db.favoriteMaterial.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+    select: { materialId: true },
+  });
+  // Материал могли убрать из списка — такие записи просто не показываем
+  const favorites = favoriteRows.flatMap((f) => materials.find((m) => m.id === f.materialId) ?? []);
 
   return (
     <>
@@ -72,17 +81,26 @@ async function AccountContent() {
         </section>
 
         <section className={styles.card}>
-          <p className="eyebrow">Последние материалы</p>
-          <ul className={styles.files}>
-            {recentMaterials.map((m) => (
-              <li key={m.id}>
-                <a href={m.href}>
-                  <span>{m.title}</span>
-                  <span className={styles.fileKind}>{m.kind}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <p className="eyebrow">Избранное</p>
+          {favorites.length ? (
+            <ul className={styles.files}>
+              {favorites.map((m) => (
+                <li key={m.id}>
+                  <a href={m.file ?? "/materials"} {...(m.file && { target: "_blank", rel: "noopener" })}>
+                    <span>{m.title}</span>
+                    <span className={styles.fileKind}>{m.type === "VIDEO" ? "Видео" : "PDF"}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <p className={styles.cardText}>Отмечайте материалы сердечком — они появятся здесь.</p>
+              <Link href="/materials" className={styles.cardLink}>
+                Все материалы <Icon name="arrowRight" size={20} />
+              </Link>
+            </>
+          )}
         </section>
       </div>
     </>

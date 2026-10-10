@@ -1,4 +1,7 @@
+import { Suspense } from "react";
 import { Header } from "@/components/Header";
+import { db } from "@/lib/db";
+import { getSessionUser } from "@/lib/session";
 import { MaterialsCatalog } from "./MaterialsCatalog";
 import styles from "./page.module.css";
 
@@ -9,8 +12,19 @@ export default function MaterialsPage() {
     <>
       <Header />
       <main className={`container ${styles.page}`}>
-        <MaterialsCatalog />
+        {/* Пока читается сессия, каталог показывается без кнопок избранного */}
+        <Suspense fallback={<MaterialsCatalog />}>
+          <CatalogWithFavorites />
+        </Suspense>
       </main>
     </>
   );
+}
+
+async function CatalogWithFavorites() {
+  const user = await getSessionUser();
+  if (!user) return <MaterialsCatalog />;
+
+  const favorites = await db.favoriteMaterial.findMany({ where: { userId: user.id }, select: { materialId: true } });
+  return <MaterialsCatalog favoriteIds={favorites.map((f) => f.materialId)} />;
 }

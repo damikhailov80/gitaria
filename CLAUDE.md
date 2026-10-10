@@ -9,6 +9,7 @@
 - Пользователи — в PostgreSQL (Prisma 7 + Better Auth). Вход и регистрация только через Google.
   Роли USER/ADMIN (админы — `ADMIN_EMAILS` в `src/lib/auth.ts`), флаг подписки, блокировка, мягкое удаление.
   `/account*` и `/admin/*` требуют входа; `/admin/users` — только админам.
+  Избранные материалы — в базе (`FavoriteMaterial`), кнопка-сердечко на `/materials` только для вошедших, список — в кабинете (`/account/materials`).
 - Остальные данные — моки из `src/lib/mock/`. Stripe и видеохостинг подключим позже. Подписка уроки пока не закрывает.
 - Тюнер и метроном — рабочие (Web Audio API).
 - Кнопка «Записаться на урок» (офлайн-уроки) пока никуда не ведёт — куда вести, не решено.
@@ -35,7 +36,7 @@ src/app/                    страницы
   materials/                открытые материалы (фильтр на клиенте)
   tools/tuner/              тюнер (микрофон + pitchy)
   tools/metronome/          метроном
-  account/ checkout/ login/ кабинет (+ settings/ — удаление аккаунта), оплата, вход через Google
+  account/ checkout/ login/ кабинет (+ materials/ — избранное, settings/ — удаление аккаунта), оплата, вход через Google
   admin/users/              пользователи: подписка и блокировка (только ADMIN)
   api/auth/[...all]/        обработчик Better Auth
 src/components/             общие компоненты (Header, Logo, Icon, LessonRow, …)
@@ -46,6 +47,7 @@ src/lib/types.ts            типы данных (курс, материалы,
 src/lib/mock/               моки: курс, материалы, школа, пользователь
 src/lib/audio/              pitch.ts (частота → нота/центы), tunings.ts, metronome.ts (планировщик)
 design/                     PNG-экраны макета из Claude Design — эталон вёрстки
+public/materials/           PDF нот (pdf/) и их обложки (covers/); список — src/lib/mock/materials.json
 public/logo*.svg            логотип: полный, знак, надпись (векторизован из исходного JPEG); favicon/icon/apple-icon — в src/app/
 ```
 
