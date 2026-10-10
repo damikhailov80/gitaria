@@ -1,0 +1,149 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  padding: 14px;
+  border-radius: 40px;
+  background: var(--color-surface);
+}
+
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.cardLink:focus-visible {
+  outline: none;
+}
+
+.card:has(.cardLink:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 205px;
+  overflow: hidden;
+  border-radius: 30px;
+}
+
+.cover {
+  object-fit: cover;
+  object-position: top;
+}
+
+.peach {
+  background: var(--color-accent-200);
+}
+
+.peach-light {
+  background: var(--color-accent-100);
+}
+
+.green {
+  background: var(--color-accent-2-200);
+}
+
+.green-light {
+  background: var(--color-accent-2-100);
+}
+
+.sage {
+  background: var(--color-accent-2-300);
+}
+
+.neutral {
+  background: var(--color-neutral-150);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.favorite {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -8px -8px -8px 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.favorite:hover {
+  background: var(--color-neutral-200);
+}
+
+.favorite:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.playCircle {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  padding-left: 4px;
+  border-radius: 50%;
+  background: var(--color-neutral-200);
+  color: var(--color-accent);
+}
+
+.docIcon {
+  color: var(--color-neutral-700);
+}
+
+.cardBody {
+  padding: 18px 12px 20px;
+}
+
+.cardTitle {
+  margin-top: 12px;
+  font-size: 22px;
+}
+
+.cardMeta {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    border-radius: var(--radius-lg);
+  }
+}

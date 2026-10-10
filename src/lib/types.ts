@@ -42,7 +42,7 @@ export type Course = {
   modules: Module[];
 };
 
-export type MaterialType = "VIDEO" | "SHEET_MUSIC" | "LYRICS";
+export type MaterialType = "VIDEO" | "SHEET_MUSIC";
 
 export type Material = {
   id: string;
@@ -50,7 +50,12 @@ export type Material = {
   type: MaterialType;
   title: string;
   meta: string;
-  thumb: "peach" | "peach-light" | "green" | "green-light" | "sage" | "neutral";
+  author?: string;
+  thumb?: "peach" | "peach-light" | "green" | "green-light" | "sage" | "neutral";
+  /** Путь к файлу в public/ */
+  file?: string;
+  /** Путь к обложке в public/ */
+  cover?: string;
 };
 
 export type Role = "USER" | "ADMIN";
