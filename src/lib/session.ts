@@ -1,6 +1,7 @@
 import "server-only";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import type { User } from "@/lib/types";
 import { auth } from "./auth";
@@ -12,6 +13,9 @@ import { db } from "./db";
  * Читает заголовки запроса, поэтому вызывать только внутри <Suspense>.
  */
 export const getSessionUser = cache(async (): Promise<User | null> => {
+  // getSession сверяет срок сессии через new Date() — без connection() Next.js
+  // ругается на «текущее время при пререндере» (например, на 404 урока).
+  await connection();
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return null;
 
