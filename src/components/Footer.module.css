@@ -1,9 +1,19 @@
 .footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-4);
   padding-top: 40px;
   padding-bottom: 40px;
   font-size: 15px;
   color: var(--color-text-muted);
+}
+
+.link {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: var(--color-text);
 }

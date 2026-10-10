@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -31,6 +32,9 @@ export function LoginForm() {
       <button type="button" className="btn btn-primary btn-block btn-lg" onClick={signIn} disabled={pending}>
         Войти через Google
       </button>
+      <p className={styles.legal}>
+        Входя, вы соглашаетесь на обработку данных согласно <Link href="/privacy">политике конфиденциальности</Link>.
+      </p>
     </div>
   );
 }

@@ -17,3 +17,8 @@ export const socials = [
 ] as const;
 
 export type SocialId = (typeof socials)[number]["id"];
+
+/** Контакт для запросов о персональных данных (страница /privacy). */
+export const privacyContact = {
+  email: "natahasim.ns@gmail.com",
+};
