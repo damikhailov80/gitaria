@@ -42,7 +42,13 @@ const paths = {
       <path d="m10.5 9.5 4 2.5-4 2.5v-5Z" />
     </>
   ),
-  arrowLeft: <path d="M19 12H5m0 0 6-6m-6 6 6 6" />,
+  facebook: (
+    <>
+      <rect x="4" y="4" width="16" height="16" rx="4.5" />
+      <path d="M15.5 8.5h-1.5a2 2 0 0 0-2 2V20m-2.5-6.5h5.5" />
+    </>
+  ),
+  arrowLeft:<path d="M19 12H5m0 0 6-6m-6 6 6 6" />,
   arrowRight: <path d="M5 12h14m0 0-6-6m6 6-6 6" />,
   minus: <path d="M6 12h12" />,
   plus: <path d="M12 6v12M6 12h12" />,

@@ -7,7 +7,7 @@ export function SocialCards() {
     <ul className={styles.grid}>
       {socials.map((s) => (
         <li key={s.id}>
-          <a href={s.href} className={styles.card}>
+          <a href={s.href} className={styles.card} target="_blank" rel="noopener noreferrer">
             <Icon name={s.id} size={30} className={styles.icon} />
             <span className={styles.name}>{s.name}</span>
             <span className={styles.caption}>{s.caption}</span>
