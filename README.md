@@ -26,9 +26,24 @@ npm run db:migrate -- --name add_something   # после правки schema.pr
 npx prisma generate                          # перегенерировать Prisma Client
 npm run db:studio                            # Prisma Studio: посмотреть и поправить данные в браузере
 npx prisma migrate reset                     # стереть базу и накатить миграции заново (все данные пропадут)
-npx prisma migrate deploy                    # на продакшене: применить готовые миграции
 docker compose down                          # остановить базу (данные сохранятся в томе)
 ```
+
+### Миграции на продакшене
+
+На проде — только `prisma migrate deploy`, не `migrate dev`. Он применяет ещё не накатанные миграции из
+`prisma/migrations/` и ничего не генерирует и не сбрасывает.
+
+`prisma.config.ts` всегда читает `.env.local`, но переменные из окружения важнее. Поэтому прод-овый
+`DATABASE_URL` передаём из `.env.prod` через окружение, в подоболочке (скобки), чтобы он не остался в терминале:
+
+```bash
+(set -a; source .env.prod; set +a; npx prisma migrate status)   # что уже накатано, что нет
+(set -a; source .env.prod; set +a; npx prisma migrate deploy)   # накатить
+```
+
+- Сначала миграция, потом выкладка кода.
+- Если база за пулером соединений (Neon, Supabase и т. п.), для миграций нужен прямой URL, не пулерный.
 
 ## Вход на сайт: Better Auth
 
