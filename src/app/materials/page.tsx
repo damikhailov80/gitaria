@@ -7,7 +7,7 @@ export const metadata = { title: "Материалы — Gitaria" };
 export default function MaterialsPage() {
   return (
     <>
-      <Header action="login" />
+      <Header />
       <main className={`container ${styles.page}`}>
         <MaterialsCatalog />
       </main>

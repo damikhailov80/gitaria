@@ -10,7 +10,7 @@ export const metadata = { title: `${course.title} — курс Gitaria` };
 export default function CoursePage() {
   return (
     <>
-      <Header action="login" />
+      <Header />
       <main className={`container ${styles.layout}`}>
         <div className={styles.content}>
           <h1 className={styles.title}>{course.title}</h1>

@@ -1,0 +1,111 @@
+.title {
+  font-size: 64px;
+}
+
+.count {
+  margin-top: 12px;
+  font-size: 17px;
+  color: var(--color-text-muted);
+}
+
+.table {
+  width: 100%;
+  margin-top: 32px;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.table th {
+  padding: 0 12px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  color: var(--color-text-muted);
+}
+
+.table td {
+  padding: 16px 12px;
+  border-top: 1px solid var(--color-divider);
+  vertical-align: middle;
+}
+
+.date {
+  white-space: nowrap;
+}
+
+.name {
+  display: block;
+  font-weight: 700;
+}
+
+.email {
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.action {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+/* На узких экранах строки таблицы — карточки */
+@media (max-width: 1100px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+  }
+
+  .table tr {
+    padding: 16px 0;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 6px 0;
+    border: 0;
+  }
+
+  .table td:first-child {
+    display: block;
+  }
+
+  .table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--color-text-muted);
+  }
+
+  .table td:last-child:empty {
+    display: none;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 40px;
+  }
+}

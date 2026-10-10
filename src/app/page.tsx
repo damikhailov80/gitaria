@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Header action="trial" />
+      <Header />
       <main className="container">
         <section className={styles.hero}>
           <div className={styles.heroText}>

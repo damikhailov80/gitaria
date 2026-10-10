@@ -22,12 +22,17 @@
   margin-top: 36px;
 }
 
-.form :global(.segmented) {
-  align-self: flex-start;
+.note {
+  font-size: 18px;
+  color: var(--color-text-body);
 }
 
-.forgot {
-  font-size: 17px;
+.error {
+  padding: 14px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-100);
+  color: var(--color-accent-800);
+  font-weight: 700;
 }
 
 .art {

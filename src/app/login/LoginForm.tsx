@@ -1,56 +1,36 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 import styles from "./page.module.css";
 
-/** Форма по макету. Авторизация пока не подключена — кнопки ничего не делают. */
+/** Вход и регистрация — только через Google. Ошибку входа Better Auth передаёт в ?error=. */
 export function LoginForm() {
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const error = useSearchParams().get("error");
+  const [pending, setPending] = useState(false);
+
+  async function signIn() {
+    setPending(true);
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/account",
+      errorCallbackURL: "/login",
+    });
+    if (error) setPending(false);
+  }
 
   return (
-    <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-      <fieldset className="segmented">
-        <legend className="sr-only">Режим</legend>
-        <label>
-          <input type="radio" name="mode" checked={mode === "login"} onChange={() => setMode("login")} />
-          Вход
-        </label>
-        <label>
-          <input type="radio" name="mode" checked={mode === "register"} onChange={() => setMode("register")} />
-          Регистрация
-        </label>
-      </fieldset>
-
-      <div className="field">
-        <label className="field-label" htmlFor="email">
-          Электронная почта
-        </label>
-        <input id="email" type="email" className="input" placeholder="you@example.com" autoComplete="email" />
-      </div>
-      <div className="field">
-        <label className="field-label" htmlFor="password">
-          Пароль
-        </label>
-        <input
-          id="password"
-          type="password"
-          className="input"
-          placeholder="••••••••"
-          autoComplete={mode === "login" ? "current-password" : "new-password"}
-        />
-      </div>
-
-      <button type="submit" className="btn btn-primary btn-block btn-lg">
-        {mode === "login" ? "Войти" : "Зарегистрироваться"}
-      </button>
-      <button type="button" className="btn btn-secondary btn-block btn-lg">
+    <div className={styles.form}>
+      <p className={styles.note}>Вход и регистрация — через аккаунт Google.</p>
+      {error && (
+        <p className={styles.error} role="alert">
+          {error === "ACCOUNT_BLOCKED" ? "Аккаунт заблокирован." : "Не удалось войти. Попробуйте ещё раз."}
+        </p>
+      )}
+      <button type="button" className="btn btn-primary btn-block btn-lg" onClick={signIn} disabled={pending}>
         Войти через Google
       </button>
-      {mode === "login" && (
-        <a href="#" className={styles.forgot}>
-          Забыли пароль?
-        </a>
-      )}
-    </form>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ export const metadata = { title: "Тюнер для гитары и укулел
 export default function TunerPage() {
   return (
     <>
-      <Header action="login" />
+      <Header />
       <main className="container">
         <Tuner />
       </main>
