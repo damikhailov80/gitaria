@@ -54,8 +54,10 @@ export type Material = {
   thumb?: "peach" | "peach-light" | "green" | "green-light" | "sage" | "neutral";
   /** Путь к файлу в public/ */
   file?: string;
-  /** Путь к обложке в public/ */
+  /** Путь к обложке в public/ или URL превью YouTube */
   cover?: string;
+  /** id видео на YouTube */
+  youtubeId?: string;
 };
 
 export type Role = "USER" | "ADMIN";

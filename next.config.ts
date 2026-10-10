@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // Не создавать AGENTS.md при запуске next dev
   agentRules: false,
+  // Превью видео YouTube в карточках материалов
+  images: {
+    remotePatterns: [new URL("https://i.ytimg.com/vi/**")],
+  },
 };
 
 export default nextConfig;

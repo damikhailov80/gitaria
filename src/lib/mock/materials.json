@@ -2,6 +2,7 @@
   {
     "id": "simply-guitar-book-one",
     "slug": "simply-guitar-book-one",
+    "type": "SHEET_MUSIC",
     "title": "Simply Guitar Book One",
     "author": "Vincent Lindsey-Clark, Alexander MacDonald",
     "pages": 46,
@@ -11,6 +12,7 @@
   {
     "id": "guitar-from-the-very-beginning",
     "slug": "guitar-from-the-very-beginning",
+    "type": "SHEET_MUSIC",
     "title": "Гитара с самого начала",
     "author": "Виктория Куликовская",
     "pages": 34,
@@ -20,6 +22,7 @@
   {
     "id": "kids-jazz-album-1",
     "slug": "kids-jazz-album-1",
+    "type": "SHEET_MUSIC",
     "title": "Детский джазовый альбом. Выпуск 1",
     "author": "Александр Виницкий",
     "pages": 26,
@@ -29,10 +32,20 @@
   {
     "id": "first-class-guitar",
     "slug": "first-class-guitar",
+    "type": "SHEET_MUSIC",
     "title": "Gitara pierwsza klasa / First Class Guitar",
     "author": "Tatiana Stachak",
     "pages": 94,
     "file": "/materials/pdf/first-class-guitar.pdf",
     "cover": "/materials/covers/first-class-guitar.jpg"
+  },
+  {
+    "id": "how-to-play-with-a-pick",
+    "slug": "how-to-play-with-a-pick",
+    "type": "VIDEO",
+    "title": "Как играть медиатором. Основы.",
+    "author": "ArbatGuitar",
+    "minutes": 9,
+    "youtubeId": "ti9px2T55Oc"
   }
 ]
