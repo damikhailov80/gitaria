@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps<"/course/[lessonSlu
 export default function LessonPage({ params }: PageProps<"/course/[lessonSlug]">) {
   return (
     <>
-      <Header action="account" />
+      <Header />
       <Suspense>
         <LessonContent params={params} />
       </Suspense>

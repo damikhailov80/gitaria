@@ -6,7 +6,7 @@ export const metadata = { title: "Метроном онлайн — Gitaria" };
 export default function MetronomePage() {
   return (
     <>
-      <Header action="login" />
+      <Header />
       <main className="container">
         <MetronomeTool />
       </main>

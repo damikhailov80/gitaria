@@ -1,4 +1,4 @@
-// Типы по черновику модели данных из REQUIREMENTS.md.
+// Типы данных сайта.
 // Пока данные приходят из src/lib/mock, позже — из Prisma.
 
 export type Attachment = {
@@ -53,10 +53,14 @@ export type Material = {
   thumb: "peach" | "peach-light" | "green" | "green-light" | "sage" | "neutral";
 };
 
+export type Role = "USER" | "ADMIN";
+
 export type User = {
   id: string;
   name: string;
   email: string;
+  role: Role;
+  hasSubscription: boolean;
 };
 
 export type Enrollment = {

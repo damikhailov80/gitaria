@@ -1,15 +1,15 @@
-@AGENTS.md
-
 # Gitaria
 
 Сайт школы игры на гитаре **gitaria.pl**: главная, онлайн-курс «Гитара с нуля» (первый урок бесплатный),
 открытые материалы, тюнер, метроном, личный кабинет, оплата через Stripe.
-Полные требования — в [REQUIREMENTS.md](REQUIREMENTS.md).
 
 ## Текущий этап
 
-- Вёрстка всех экранов по макету. Авторизации нет, все страницы открыты.
-- Данные — моки из `src/lib/mock/`. Prisma/PostgreSQL, Auth.js, Stripe и видеохостинг подключим позже.
+- Вёрстка всех экранов по макету.
+- Пользователи — в PostgreSQL (Prisma 7 + Better Auth). Вход и регистрация только через Google.
+  Роли USER/ADMIN (админы — `ADMIN_EMAILS` в `src/lib/auth.ts`), флаг подписки, блокировка, мягкое удаление.
+  `/account*` и `/admin/*` требуют входа; `/admin/users` — только админам.
+- Остальные данные — моки из `src/lib/mock/`. Stripe и видеохостинг подключим позже. Подписка уроки пока не закрывает.
 - Тюнер и метроном — рабочие (Web Audio API).
 - Кнопка «Записаться на урок» (офлайн-уроки) пока никуда не ведёт — куда вести, не решено.
 
@@ -18,6 +18,9 @@
 Next.js 16 (App Router, TypeScript, Cache Components), React 19, CSS Modules, без Tailwind.
 
 ```bash
+npm run db:up       # PostgreSQL в Docker (docker-compose.yml)
+npm run db:migrate  # миграции Prisma (prisma migrate dev)
+npm run db:studio   # Prisma Studio — данные базы в браузере
 npm run dev     # dev-сервер
 npm run build   # сборка + проверка типов
 npm run lint    # ESLint
@@ -26,15 +29,20 @@ npm run lint    # ESLint
 ## Структура
 
 ```
-src/app/                    страницы (маршруты — см. REQUIREMENTS.md, раздел 7)
+src/app/                    страницы
   page.tsx                  главная
   course/                   страница курса; [lessonSlug]/ — урок
   materials/                открытые материалы (фильтр на клиенте)
   tools/tuner/              тюнер (микрофон + pitchy)
   tools/metronome/          метроном
-  account/ checkout/ login/ кабинет, оплата, вход
+  account/ checkout/ login/ кабинет (+ settings/ — удаление аккаунта), оплата, вход через Google
+  admin/users/              пользователи: подписка и блокировка (только ADMIN)
+  api/auth/[...all]/        обработчик Better Auth
 src/components/             общие компоненты (Header, Logo, Icon, LessonRow, …)
-src/lib/types.ts            типы по модели данных из REQUIREMENTS.md
+src/lib/auth.ts             конфиг Better Auth (Google, хуки: роль админа, блокировка, восстановление)
+src/lib/session.ts          getCurrentUser() / requireAdmin() — только внутри <Suspense>
+src/lib/db.ts               Prisma Client; схема — prisma/schema.prisma, клиент генерируется в src/generated/
+src/lib/types.ts            типы данных (курс, материалы, пользователь)
 src/lib/mock/               моки: курс, материалы, школа, пользователь
 src/lib/audio/              pitch.ts (частота → нота/центы), tunings.ts, metronome.ts (планировщик)
 design/                     PNG-экраны макета из Claude Design — эталон вёрстки

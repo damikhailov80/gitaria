@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Logo, LogoMark } from "@/components/Logo";
 import { LoginForm } from "./LoginForm";
 import styles from "./page.module.css";
@@ -10,7 +11,9 @@ export default function LoginPage() {
       <section className={styles.formSide}>
         <Logo />
         <h1 className={styles.title}>Вход в кабинет</h1>
-        <LoginForm />
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </section>
       <section className={styles.art} aria-hidden="true">
         <span className={styles.circleTop} />
