@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
 import { SocialCards } from "@/components/SocialCards";
 import { allLessons, course, formatPrice } from "@/lib/mock/course";
-import { history, teacher } from "@/lib/mock/school";
+import { history, teacher, telegramHref } from "@/lib/mock/school";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -27,10 +27,9 @@ export default function HomePage() {
               что душа хочет.
             </p>
             <div className={styles.actions}>
-              {/* Куда ведёт запись на офлайн-урок — пока не решено */}
-              <button type="button" className="btn btn-primary">
+              <a href={telegramHref} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
                 Записаться на урок
-              </button>
+              </a>
               <Link href={freeLessonHref} className="btn btn-secondary">
                 Бесплатный онлайн-урок
               </Link>
@@ -80,9 +79,9 @@ export default function HomePage() {
                 </li>
               </ul>
               <div className={styles.actions}>
-                <button type="button" className="btn btn-primary">
+                <a href={telegramHref} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
                   Записаться на урок
-                </button>
+                </a>
               </div>
             </article>
 
