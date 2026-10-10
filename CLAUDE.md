@@ -37,6 +37,7 @@ src/app/                    страницы
   tools/tuner/              тюнер (микрофон + pitchy)
   tools/metronome/          метроном
   account/ checkout/ login/ кабинет (+ materials/ — избранное, settings/ — удаление аккаунта), оплата, вход через Google
+  privacy/                  политика конфиденциальности (GDPR); ссылки — в футере и на /login
   admin/users/              пользователи: подписка и блокировка (только ADMIN)
   api/auth/[...all]/        обработчик Better Auth
 src/components/             общие компоненты (Header, Logo, Icon, LessonRow, …)
