@@ -13,5 +13,5 @@ export const enrollment: Enrollment = {
   courseId: "c1",
   purchasedAt: "14 сентября 2026",
   completedLessons: 7,
-  currentLessonSlug: "urok-8",
+  currentLessonSlug: "lesson-8",
 };
