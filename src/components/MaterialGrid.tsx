@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { startTransition, useOptimistic, useState } from "react";
+import { startTransition, useLayoutEffect, useOptimistic, useState } from "react";
 import { setFavorite } from "@/app/materials/actions";
 import { materialTypeLabels } from "@/lib/mock/materials";
 import type { Material, MaterialType } from "@/lib/types";
@@ -33,6 +33,9 @@ export function MaterialGrid({
       favorite ? [...(ids ?? []), id] : (ids ?? []).filter((x) => x !== id),
   );
   const [playing, setPlaying] = useState<Material | null>(null);
+
+  // Страница при уходе прячется (Activity), а не размонтируется — закрываем видео, чтобы оно не играло
+  useLayoutEffect(() => () => setPlaying(null), []);
 
   function toggleFavorite(id: string, favorite: boolean) {
     startTransition(async () => {

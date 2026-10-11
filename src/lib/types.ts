@@ -41,6 +41,8 @@ export type Course = {
   priceAmount: number;
   currency: "pln";
   vatAmount: number;
+  /** Вступление вне модулей: урок 0, бесплатный, не входит в счёт уроков */
+  intro?: Lesson;
   modules: Module[];
 };
 
