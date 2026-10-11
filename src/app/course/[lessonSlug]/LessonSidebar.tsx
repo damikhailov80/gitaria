@@ -25,13 +25,15 @@ export function LessonSidebar({
 
   return (
     <aside className={styles.sidebar}>
-      {course.intro && (
+      {course.intro.length > 0 && (
         <>
           <p className="eyebrow">Вступление</p>
           <ol className={styles.sideList}>
-            <li>
-              <LessonRow lesson={course.intro} variant="compact" active={course.intro.id === lesson.id} />
-            </li>
+            {course.intro.map((l) => (
+              <li key={l.id}>
+                <LessonRow lesson={l} variant="compact" active={l.id === lesson.id} locked={!l.isFree && !subscribed} />
+              </li>
+            ))}
           </ol>
         </>
       )}

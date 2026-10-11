@@ -1,6 +1,8 @@
 // Типы данных сайта.
 // Пока данные приходят из src/lib/mock, позже — из Prisma.
 
+import type { IconName } from "@/components/Icon";
+
 export type Attachment = {
   id: string;
   title: string;
@@ -15,6 +17,8 @@ export type Lesson = {
   order: number;
   title: string;
   isFree: boolean;
+  /** Значок вместо номера в списке уроков */
+  icon?: IconName;
   durationLabel?: string;
   /** id видео на YouTube */
   youtubeId?: string;
@@ -41,8 +45,8 @@ export type Course = {
   priceAmount: number;
   currency: "pln";
   vatAmount: number;
-  /** Вступление вне модулей: урок 0, бесплатный, не входит в счёт уроков */
-  intro?: Lesson;
+  /** Вступление вне модулей, не входит в счёт уроков: урок 0 (бесплатный), затем видео для купивших — со значком вместо номера */
+  intro: Lesson[];
   modules: Module[];
 };
 

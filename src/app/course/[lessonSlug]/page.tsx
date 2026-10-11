@@ -11,7 +11,7 @@ import { LessonVideo } from "./LessonVideo";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
-  return [...(course.intro ? [course.intro] : []), ...allLessons].map((l) => ({ lessonSlug: l.slug }));
+  return [...course.intro, ...allLessons].map((l) => ({ lessonSlug: l.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/course/[lessonSlug]">): Promise<Metadata> {
@@ -72,9 +72,13 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
         {!hasAccess && (
           <div className={styles.next}>
             <div>
-              <h2 className={styles.nextTitle}>Урок откроется после покупки курса</h2>
+              <h2 className={styles.nextTitle}>
+                {lessonModule ? "Урок откроется после покупки курса" : "Видео откроется после покупки курса"}
+              </h2>
               <p className={styles.nextNote}>
-                Уроки {paidRange[0]}–{paidRange.at(-1)} доступны ученикам с подпиской
+                {lessonModule
+                  ? `Уроки ${paidRange[0]}–${paidRange.at(-1)} доступны ученикам с подпиской`
+                  : "Доступно ученикам с подпиской"}
               </p>
             </div>
             {user ? (

@@ -25,19 +25,6 @@ export default function CoursePage() {
             ))}
           </ul>
 
-          {course.intro && (
-            <section className={styles.module}>
-              <h2 className={styles.moduleHeading}>
-                <span className="eyebrow">Вступление</span>
-              </h2>
-              <ol className={styles.lessons}>
-                <li>
-                  <LessonRow lesson={course.intro} />
-                </li>
-              </ol>
-            </section>
-          )}
-
           {/* Замки зависят от подписки — до загрузки сессии показываем их у всех платных уроков */}
           <Suspense fallback={<ModuleList subscribed={false} />}>
             <SessionModuleList />
@@ -74,21 +61,39 @@ async function SessionModuleList() {
   return <ModuleList subscribed={!!user?.hasSubscription} />;
 }
 
-/** Модули курса; с подпиской замков у платных уроков нет */
+/** Вступление и модули курса; с подпиской замков у платных уроков нет */
 function ModuleList({ subscribed }: { subscribed: boolean }) {
-  return course.modules.map((m) => (
-    <section key={m.id} className={styles.module}>
-      <h2 className={styles.moduleHeading}>
-        <span className="eyebrow">Модуль {m.order}</span>
-        <span className={styles.moduleTitle}>{m.title}</span>
-      </h2>
-      <ol className={styles.lessons}>
-        {m.lessons.map((lesson) => (
-          <li key={lesson.id}>
-            <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
-          </li>
-        ))}
-      </ol>
-    </section>
-  ));
+  return (
+    <>
+      {course.intro.length > 0 && (
+        <section className={styles.module}>
+          <h2 className={styles.moduleHeading}>
+            <span className="eyebrow">Вступление</span>
+          </h2>
+          <ol className={styles.lessons}>
+            {course.intro.map((lesson) => (
+              <li key={lesson.id}>
+                <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+      {course.modules.map((m) => (
+        <section key={m.id} className={styles.module}>
+          <h2 className={styles.moduleHeading}>
+            <span className="eyebrow">Модуль {m.order}</span>
+            <span className={styles.moduleTitle}>{m.title}</span>
+          </h2>
+          <ol className={styles.lessons}>
+            {m.lessons.map((lesson) => (
+              <li key={lesson.id}>
+                <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </>
+  );
 }
