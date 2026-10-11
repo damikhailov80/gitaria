@@ -19,7 +19,7 @@ export function LessonRow({ lesson, variant = "full", active = false, locked = !
       className={`${styles.row} ${styles[variant]} ${active ? styles.active : ""}`}
       aria-current={active ? "page" : undefined}
     >
-      <span className={styles.num}>{lesson.order}</span>
+      <span className={styles.num}>{lesson.icon ? <Icon name={lesson.icon} size={16} /> : lesson.order}</span>
       <span className={styles.title}>{lesson.title}</span>
       {lesson.isFree && variant === "full" && <span className="tag tag-green">Бесплатно</span>}
       {locked && <Icon name="lock" size={20} className={styles.lock} aria-label="Доступно после покупки" />}

@@ -7,7 +7,7 @@ type LessonData = Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
 };
 
 type CourseData = {
-  intro?: LessonData;
+  intro: LessonData[];
   modules: {
     id: string;
     title: string;
@@ -15,8 +15,11 @@ type CourseData = {
   }[];
 };
 
-const introData = (data as CourseData).intro;
-const intro: Lesson | undefined = introData && { ...introData, id: "l0", order: 0, isFree: true, attachments: undefined };
+const intro: Lesson[] = (data as CourseData).intro.map((l, i) =>
+  i === 0
+    ? { ...l, id: "l0", order: 0, isFree: true, attachments: undefined }
+    : { ...l, id: `l0-${l.slug}`, order: 0, isFree: false, icon: "play", attachments: undefined },
+);
 
 const lessons: Lesson[] = [];
 
@@ -55,7 +58,8 @@ export const course: Course = {
 export const allLessons = lessons;
 
 export function getLesson(slug: string) {
-  if (intro?.slug === slug) return { lesson: intro, module: null };
+  const introLesson = intro.find((l) => l.slug === slug);
+  if (introLesson) return { lesson: introLesson, module: null };
   const lesson = lessons.find((l) => l.slug === slug);
   if (!lesson) return null;
   const lessonModule = modules.find((m) => m.lessons.includes(lesson))!;
