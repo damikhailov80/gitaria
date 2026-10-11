@@ -26,8 +26,8 @@ export default function CoursePage() {
             ))}
           </ul>
 
-          {/* Замки зависят от подписки — до загрузки сессии показываем их у всех платных уроков */}
-          <Suspense fallback={<ModuleList subscribed={false} completed={new Set()} />}>
+          {/* Замки зависят от подписки — список показываем только после загрузки сессии, чтобы они не мигали */}
+          <Suspense fallback={null}>
             <SessionModuleList />
           </Suspense>
         </div>
