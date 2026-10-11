@@ -40,12 +40,21 @@
     "cover": "/materials/covers/first-class-guitar.jpg"
   },
   {
-    "id": "how-to-play-with-a-pick",
-    "slug": "how-to-play-with-a-pick",
+    "id": "what-you-need-to-start",
+    "slug": "what-you-need-to-start",
     "type": "VIDEO",
-    "title": "Как играть медиатором. Основы.",
-    "author": "ArbatGuitar",
-    "minutes": 9,
-    "youtubeId": "ti9px2T55Oc"
+    "title": "Что нужно для обучения",
+    "author": "Gitaria",
+    "minutes": 1,
+    "youtubeId": "4HDhRxTgAoM"
+  },
+  {
+    "id": "how-to-choose-a-guitar",
+    "slug": "how-to-choose-a-guitar",
+    "type": "VIDEO",
+    "title": "Как выбрать гитару",
+    "author": "Gitaria",
+    "minutes": 2,
+    "youtubeId": "iQQc_9k0jeU"
   }
 ]
