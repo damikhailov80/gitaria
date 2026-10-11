@@ -8,9 +8,11 @@ type Props = {
   /** compact — строка в сайдбаре урока, full — на странице курса */
   variant?: "full" | "compact";
   active?: boolean;
+  /** Замок у урока; по умолчанию — у всех платных */
+  locked?: boolean;
 };
 
-export function LessonRow({ lesson, variant = "full", active = false }: Props) {
+export function LessonRow({ lesson, variant = "full", active = false, locked = !lesson.isFree }: Props) {
   return (
     <Link
       href={`/course/${lesson.slug}`}
@@ -19,11 +21,8 @@ export function LessonRow({ lesson, variant = "full", active = false }: Props) {
     >
       <span className={styles.num}>{lesson.order}</span>
       <span className={styles.title}>{lesson.title}</span>
-      {lesson.isFree ? (
-        variant === "full" && <span className="tag tag-green">Бесплатно</span>
-      ) : (
-        <Icon name="lock" size={20} className={styles.lock} aria-label="Доступно после покупки" />
-      )}
+      {lesson.isFree && variant === "full" && <span className="tag tag-green">Бесплатно</span>}
+      {locked && <Icon name="lock" size={20} className={styles.lock} aria-label="Доступно после покупки" />}
     </Link>
   );
 }

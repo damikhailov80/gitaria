@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
 import { LessonRow } from "@/components/LessonRow";
 import { allLessons, course, formatPrice } from "@/lib/mock/course";
+import { getSessionUser } from "@/lib/session";
 import styles from "./page.module.css";
 
 export const metadata = { title: `${course.title} — курс Gitaria` };
@@ -36,21 +38,10 @@ export default function CoursePage() {
             </section>
           )}
 
-          {course.modules.map((m) => (
-            <section key={m.id} className={styles.module}>
-              <h2 className={styles.moduleHeading}>
-                <span className="eyebrow">Модуль {m.order}</span>
-                <span className={styles.moduleTitle}>{m.title}</span>
-              </h2>
-              <ol className={styles.lessons}>
-                {m.lessons.map((lesson) => (
-                  <li key={lesson.id}>
-                    <LessonRow lesson={lesson} />
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ))}
+          {/* Замки зависят от подписки — до загрузки сессии показываем их у всех платных уроков */}
+          <Suspense fallback={<ModuleList subscribed={false} />}>
+            <SessionModuleList />
+          </Suspense>
         </div>
 
         <aside className={styles.priceCard}>
@@ -76,4 +67,28 @@ export default function CoursePage() {
       </main>
     </>
   );
+}
+
+async function SessionModuleList() {
+  const user = await getSessionUser();
+  return <ModuleList subscribed={!!user?.hasSubscription} />;
+}
+
+/** Модули курса; с подпиской замков у платных уроков нет */
+function ModuleList({ subscribed }: { subscribed: boolean }) {
+  return course.modules.map((m) => (
+    <section key={m.id} className={styles.module}>
+      <h2 className={styles.moduleHeading}>
+        <span className="eyebrow">Модуль {m.order}</span>
+        <span className={styles.moduleTitle}>{m.title}</span>
+      </h2>
+      <ol className={styles.lessons}>
+        {m.lessons.map((lesson) => (
+          <li key={lesson.id}>
+            <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
+          </li>
+        ))}
+      </ol>
+    </section>
+  ));
 }
