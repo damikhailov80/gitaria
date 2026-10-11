@@ -1,16 +1,22 @@
 import type { Course, Lesson, Module } from "@/lib/types";
 import data from "./course.json";
 
-/** Структура course.json: модули → уроки; номера уроков и подписи к PDF считаются здесь */
+/** Структура course.json: вступление + модули → уроки; номера уроков и подписи к PDF считаются здесь */
+type LessonData = Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
+  attachments?: { id: string; title: string; pages: number; file: string }[];
+};
+
 type CourseData = {
+  intro?: LessonData;
   modules: {
     id: string;
     title: string;
-    lessons: (Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
-      attachments?: { id: string; title: string; pages: number; file: string }[];
-    })[];
+    lessons: LessonData[];
   }[];
 };
+
+const introData = (data as CourseData).intro;
+const intro: Lesson | undefined = introData && { ...introData, id: "l0", order: 0, isFree: true, attachments: undefined };
 
 const lessons: Lesson[] = [];
 
@@ -42,12 +48,14 @@ export const course: Course = {
   priceAmount: 19900,
   currency: "pln",
   vatAmount: 3721,
+  intro,
   modules,
 };
 
 export const allLessons = lessons;
 
 export function getLesson(slug: string) {
+  if (intro?.slug === slug) return { lesson: intro, module: null };
   const lesson = lessons.find((l) => l.slug === slug);
   if (!lesson) return null;
   const lessonModule = modules.find((m) => m.lessons.includes(lesson))!;

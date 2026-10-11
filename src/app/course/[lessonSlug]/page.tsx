@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
-import { LessonRow } from "@/components/LessonRow";
 import { allLessons, course, formatPrice, getLesson } from "@/lib/mock/course";
+import { LessonSidebar } from "./LessonSidebar";
+import { LessonVideo } from "./LessonVideo";
 import styles from "./page.module.css";
 
 export function generateStaticParams() {
-  return allLessons.map((l) => ({ lessonSlug: l.slug }));
+  return [...(course.intro ? [course.intro] : []), ...allLessons].map((l) => ({ lessonSlug: l.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/course/[lessonSlug]">): Promise<Metadata> {
@@ -36,50 +37,24 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
   const { lesson, module: lessonModule } = found;
 
   const next = allLessons[lesson.order];
-  const otherModules = course.modules.filter((m) => m.id !== lessonModule.id).map((m) => m.order);
-  const otherCount = allLessons.length - lessonModule.lessons.length;
-  const otherLabel =
-    otherModules.length > 1 && otherModules.at(-1)! - otherModules[0] === otherModules.length - 1
-      ? `${otherModules[0]}–${otherModules.at(-1)}`
-      : otherModules.join(", ");
   const paidRange = allLessons.filter((l) => !l.isFree).map((l) => l.order);
 
   return (
     <main className={`container ${styles.layout}`}>
-      <aside className={styles.sidebar}>
-        <p className="eyebrow">
-          Модуль {lessonModule.order} · {lessonModule.title}
-        </p>
-        <ol className={styles.sideList}>
-          {lessonModule.lessons.map((l) => (
-            <li key={l.id}>
-              <LessonRow lesson={l} variant="compact" active={l.id === lesson.id} />
-            </li>
-          ))}
-        </ol>
-        <Link href="/course" className={styles.more}>
-          + ещё {otherCount} уроков в модулях {otherLabel}
-        </Link>
-      </aside>
+      <LessonSidebar lesson={lesson} lessonModule={lessonModule} />
 
       <article className={styles.main}>
-        <div className={styles.video}>
-          <span className={styles.videoBlob} aria-hidden="true" />
-          <button type="button" className={styles.play} aria-label="Смотреть видео">
-            <Icon name="play" size={44} />
-          </button>
-          {lesson.durationLabel && <span className={styles.duration}>{lesson.durationLabel}</span>}
-        </div>
+        <LessonVideo lesson={lesson} />
 
         <div className={styles.meta}>
           {lesson.isFree && <span className="tag tag-green">Бесплатный урок</span>}
           <span className={styles.counter}>
-            Урок {lesson.order} из {allLessons.length}
+            {lessonModule ? `Урок ${lesson.order} из ${allLessons.length}` : "Вступление"}
           </span>
         </div>
         <h1 className={styles.title}>{lesson.title}</h1>
 
-        <div className={styles.body}>
+        <div className={`${styles.body} ${lesson.attachments?.length ? "" : styles.bodySingle}`}>
           <div className={styles.text}>
             {lesson.content?.map((p) => (
               <p key={p}>{p}</p>
@@ -113,7 +88,16 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
           )}
         </div>
 
-        {next && (
+        {next?.isFree && (
+          <div className={styles.next}>
+            <h2 className={styles.nextTitle}>Следующий: «{next.title}»</h2>
+            <Link href={`/course/${next.slug}`} className="btn btn-primary">
+              Смотреть урок {next.order}
+            </Link>
+          </div>
+        )}
+
+        {next && !next.isFree && (
           <div className={styles.next}>
             <div>
               <h2 className={styles.nextTitle}>Следующий: «{next.title}»</h2>

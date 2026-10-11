@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import type { Material } from "@/lib/types";
 import { Icon } from "./Icon";
 import styles from "./VideoDialog.module.css";
@@ -13,6 +13,13 @@ export function VideoDialog({ video, onClose }: { video: Material | null; onClos
     if (video) ref.current?.showModal();
     else ref.current?.close();
   }, [video]);
+
+  // Спрятанная при переходе страница (Activity) не должна держать модальное окно открытым:
+  // иначе видимая страница перестаёт реагировать на клики
+  useLayoutEffect(() => {
+    const dialog = ref.current;
+    return () => dialog?.close();
+  }, []);
 
   return (
     <dialog

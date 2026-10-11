@@ -23,6 +23,19 @@ export default function CoursePage() {
             ))}
           </ul>
 
+          {course.intro && (
+            <section className={styles.module}>
+              <h2 className={styles.moduleHeading}>
+                <span className="eyebrow">Вступление</span>
+              </h2>
+              <ol className={styles.lessons}>
+                <li>
+                  <LessonRow lesson={course.intro} />
+                </li>
+              </ol>
+            </section>
+          )}
+
           {course.modules.map((m) => (
             <section key={m.id} className={styles.module}>
               <h2 className={styles.moduleHeading}>
