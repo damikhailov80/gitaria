@@ -49,7 +49,13 @@ export function HeaderBar({ userName }: { userName?: string | null }) {
             </Link>
           );
         })}
-        <HeaderAction userName={userName} />
+        {/* Место под «Войти»/аватар резервируется заранее, чтобы меню не дёргалось, пока грузится сессия */}
+        <div className={styles.actionSlot}>
+          <span className={`btn btn-secondary ${styles.action} ${styles.sizer}`} aria-hidden="true">
+            Войти
+          </span>
+          <HeaderAction userName={userName} />
+        </div>
       </nav>
     </header>
   );
