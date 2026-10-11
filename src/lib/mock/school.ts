@@ -12,7 +12,7 @@ export const history = [
 ] as const;
 
 /** Telegram преподавателя: туда же ведёт запись на офлайн-урок. */
-export const telegramHref = "https://t.me/natahasim_ns";
+export const telegramHref = "https://t.me/+m1xhg4wdp09mMDRi";
 
 export const socials = [
   {
