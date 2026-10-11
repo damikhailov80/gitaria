@@ -77,10 +77,3 @@ export type User = {
   role: Role;
   hasSubscription: boolean;
 };
-
-export type Enrollment = {
-  courseId: string;
-  purchasedAt: string;
-  completedLessons: number;
-  currentLessonSlug: string;
-};

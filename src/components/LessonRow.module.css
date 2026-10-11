@@ -53,6 +53,16 @@
   background: transparent;
 }
 
+.completed .num {
+  background: var(--color-accent-2-100);
+  color: var(--color-accent-2-800);
+}
+
+.check {
+  flex: none;
+  color: var(--color-accent-2-800);
+}
+
 .title {
   flex: 1;
   font-size: 16px;

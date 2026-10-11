@@ -30,7 +30,7 @@ export function AccountMenu({ isAdmin }: { isAdmin: boolean }) {
 
   return (
     <nav className={styles.menu} aria-label="Разделы кабинета">
-      {item("/account", "Мои курсы")}
+      {item("/account", "Мой курс")}
       {item("/account/materials", "Мои материалы")}
       {item("/account/settings", "Настройки")}
       {isAdmin && item("/admin/users", "Пользователи")}

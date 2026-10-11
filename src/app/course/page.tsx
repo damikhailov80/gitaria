@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
 import { LessonRow } from "@/components/LessonRow";
 import { allLessons, course, formatPrice } from "@/lib/mock/course";
+import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import styles from "./page.module.css";
 
@@ -26,7 +27,7 @@ export default function CoursePage() {
           </ul>
 
           {/* Замки зависят от подписки — до загрузки сессии показываем их у всех платных уроков */}
-          <Suspense fallback={<ModuleList subscribed={false} />}>
+          <Suspense fallback={<ModuleList subscribed={false} completed={new Set()} />}>
             <SessionModuleList />
           </Suspense>
         </div>
@@ -58,11 +59,16 @@ export default function CoursePage() {
 
 async function SessionModuleList() {
   const user = await getSessionUser();
-  return <ModuleList subscribed={!!user?.hasSubscription} />;
+  const subscribed = !!user?.hasSubscription;
+  // Пройденные уроки отмечаем только у тех, кто купил курс
+  const rows = subscribed
+    ? await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } })
+    : [];
+  return <ModuleList subscribed={subscribed} completed={new Set(rows.map((r) => r.lessonId))} />;
 }
 
-/** Вступление и модули курса; с подпиской замков у платных уроков нет */
-function ModuleList({ subscribed }: { subscribed: boolean }) {
+/** Вступление и модули курса; с подпиской нет замков у платных уроков и метки «Бесплатно» */
+function ModuleList({ subscribed, completed }: { subscribed: boolean; completed: Set<string> }) {
   return (
     <>
       {course.intro.length > 0 && (
@@ -73,7 +79,7 @@ function ModuleList({ subscribed }: { subscribed: boolean }) {
           <ol className={styles.lessons}>
             {course.intro.map((lesson) => (
               <li key={lesson.id}>
-                <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
+                <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} free={lesson.isFree && !subscribed} />
               </li>
             ))}
           </ol>
@@ -88,7 +94,12 @@ function ModuleList({ subscribed }: { subscribed: boolean }) {
           <ol className={styles.lessons}>
             {m.lessons.map((lesson) => (
               <li key={lesson.id}>
-                <LessonRow lesson={lesson} locked={!lesson.isFree && !subscribed} />
+                <LessonRow
+                  lesson={lesson}
+                  locked={!lesson.isFree && !subscribed}
+                  free={lesson.isFree && !subscribed}
+                  completed={completed.has(lesson.id)}
+                />
               </li>
             ))}
           </ol>
