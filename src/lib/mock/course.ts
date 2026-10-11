@@ -1,61 +1,35 @@
 import type { Course, Lesson, Module } from "@/lib/types";
+import data from "./course.json";
 
-const moduleTitles = ["Первые шаги", "Аккорды", "Ритм", "Ноты и пьесы"];
-
-const lessonTitles = [
-  "Знакомство с гитарой и посадка",
-  "Настройка и названия струн",
-  "Постановка правой руки",
-  "Первые звуки: щипок",
-  "Постановка левой руки",
-  "Первая мелодия",
-  "Что такое аккорд",
-  "Am, Dm, E",
-  "C, G и упрощённый F",
-  "Смена аккордов без пауз",
-  "Перебор «четвёрка»",
-  "Песня целиком",
-  "Счёт и длительности",
-  "Бой «шестёрка»",
-  "Работа с метрономом",
-  "Синкопы",
-  "Перебор «восьмёрка»",
-  "Аккомпанемент к песне",
-  "Ноты в первой позиции",
-  "Чтение с листа",
-  "Баррэ",
-  "Этюд",
-  "Пьеса для классической гитары",
-  "Итоговое выступление",
-];
-
-const firstLesson: Partial<Lesson> = {
-  durationLabel: "12:40",
-  content: [
-    "В этом уроке разберём, из чего состоит гитара, как правильно сесть и удобно держать инструмент. Хорошая посадка — основа, на которой держится всё остальное: без напряжения в плечах и запястьях играть легче и дольше.",
-  ],
-  homework:
-    "Сядьте на край стула, поставьте левую ногу на подставку и найдите положение, в котором гриф смотрит чуть вверх. Посидите так 5 минут, проверяя, что плечи расслаблены.",
-  attachments: [
-    { id: "a1", title: "Строение гитары", meta: "PDF · 1,2 МБ", href: "#" },
-    { id: "a2", title: "Упражнения, неделя 1", meta: "PDF · 640 КБ", href: "#" },
-  ],
+/** Структура course.json: модули → уроки; номера уроков и подписи к PDF считаются здесь */
+type CourseData = {
+  modules: {
+    id: string;
+    title: string;
+    lessons: (Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
+      attachments?: { id: string; title: string; pages: number; file: string }[];
+    })[];
+  }[];
 };
 
-const lessons: Lesson[] = lessonTitles.map((title, i) => ({
-  id: `l${i + 1}`,
-  slug: `urok-${i + 1}`,
-  order: i + 1,
-  title,
-  isFree: i === 0,
-  ...(i === 0 ? firstLesson : {}),
-}));
+const lessons: Lesson[] = [];
 
-const modules: Module[] = moduleTitles.map((title, i) => ({
-  id: `m${i + 1}`,
+const modules: Module[] = (data as CourseData).modules.map((m, i) => ({
+  id: m.id,
   order: i + 1,
-  title,
-  lessons: lessons.slice(i * 6, i * 6 + 6),
+  title: m.title,
+  lessons: m.lessons.map(({ attachments, ...l }) => {
+    const order = lessons.length + 1;
+    const lesson: Lesson = {
+      ...l,
+      id: `l${order}`,
+      order,
+      isFree: order === 1,
+      attachments: attachments?.map(({ pages, file, ...a }) => ({ ...a, meta: `PDF · ${pages} стр.`, href: file })),
+    };
+    lessons.push(lesson);
+    return lesson;
+  }),
 }));
 
 export const course: Course = {
@@ -63,11 +37,11 @@ export const course: Course = {
   slug: "gitara-s-nulya",
   title: "Гитара с нуля",
   description:
-    "24 урока: от посадки и первых звуков до аккомпанемента и пьесы для классической гитары. К каждому уроку — видео, текстовое объяснение и материалы в PDF.",
-  highlights: ["24 видеоурока", "Ноты и табы в PDF", "Доступ навсегда"],
-  priceAmount: 29900,
+    "20 уроков в двух частях: от посадки и правой руки до гамм, позиций и пьес под минусовку. К каждому уроку — видео, текстовое объяснение и ноты в PDF.",
+  highlights: ["20 видеоуроков", "Ноты и табы в PDF", "Доступ навсегда"],
+  priceAmount: 19900,
   currency: "pln",
-  vatAmount: 5591,
+  vatAmount: 3721,
   modules,
 };
 
