@@ -9,11 +9,14 @@ export function LessonSidebar({
   lesson,
   lessonModule,
   subscribed,
+  completed,
 }: {
   lesson: Lesson;
   lessonModule: Module | null;
   /** С подпиской замков у платных уроков нет */
   subscribed: boolean;
+  /** id пройденных уроков */
+  completed: Set<string>;
 }) {
   const sideModule = lessonModule ?? course.modules[0];
   const otherModules = course.modules.filter((m) => m.id !== sideModule.id).map((m) => m.order);
@@ -43,7 +46,13 @@ export function LessonSidebar({
       <ol className={styles.sideList}>
         {sideModule.lessons.map((l) => (
           <li key={l.id}>
-            <LessonRow lesson={l} variant="compact" active={l.id === lesson.id} locked={!l.isFree && !subscribed} />
+            <LessonRow
+              lesson={l}
+              variant="compact"
+              active={l.id === lesson.id}
+              locked={!l.isFree && !subscribed}
+              completed={completed.has(l.id)}
+            />
           </li>
         ))}
       </ol>

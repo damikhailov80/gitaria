@@ -1,10 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Icon } from "@/components/Icon";
 import { db } from "@/lib/db";
-import { allLessons, course } from "@/lib/mock/course";
-import { materials } from "@/lib/mock/materials";
-import { enrollment } from "@/lib/mock/user";
+import { allLessons, course, formatPrice } from "@/lib/mock/course";
 import { getCurrentUser } from "@/lib/session";
 import styles from "./page.module.css";
 
@@ -21,92 +18,55 @@ export default function AccountPage() {
 
 async function AccountContent() {
   const user = await getCurrentUser();
-  const current = allLessons.find((l) => l.slug === enrollment.currentLessonSlug)!;
-  const progress = (enrollment.completedLessons / allLessons.length) * 100;
-  const favoriteRows = await db.favoriteMaterial.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-    select: { materialId: true },
-  });
-  // Материал могли убрать из списка — такие записи просто не показываем
-  const favorites = favoriteRows.flatMap((f) => materials.find((m) => m.id === f.materialId) ?? []);
+  const rows = await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } });
+  const done = new Set(rows.map((r) => r.lessonId));
+  const completed = allLessons.filter((l) => done.has(l.id)).length;
+  // Следующий — первый непройденный урок; если он платный, а подписки нет — предлагаем купить курс
+  const next = allLessons.find((l) => !done.has(l.id));
+  const locked = next && !next.isFree && !user.hasSubscription;
 
   return (
     <>
       <h1 className={styles.title}>Здравствуйте, {user.name}</h1>
-      <p className={styles.subscription}>
-        {user.hasSubscription ? (
-          <span className="tag tag-green">Подписка активна</span>
-        ) : (
-          <>
-            <span className="tag">Подписка не куплена</span>
-            <Link href="/checkout">Купить курс</Link>
-          </>
-        )}
-      </p>
 
       <section className={styles.continue}>
         <div className={styles.continueText}>
-          <p className={`eyebrow ${styles.greenEyebrow}`}>Продолжить</p>
-          <h2 className={styles.continueTitle}>
-            Урок {current.order} · {current.title}
-          </h2>
-          <div
-            className={styles.progress}
-            role="progressbar"
-            aria-valuenow={enrollment.completedLessons}
-            aria-valuemin={0}
-            aria-valuemax={allLessons.length}
-            aria-label="Прогресс курса"
-          >
-            <span style={{ width: `${progress}%` }} />
-          </div>
-          <p className={styles.progressText}>
-            Пройдено {enrollment.completedLessons} из {allLessons.length} уроков
+          <p className={`eyebrow ${styles.greenEyebrow}`}>
+            {!next ? "Курс пройден" : locked ? "Дальше — после покупки курса" : completed ? "Продолжить" : "Начать курс"}
           </p>
-        </div>
-        <Link href={`/course/${current.slug}`} className="btn btn-primary btn-lg">
-          Продолжить урок
-        </Link>
-      </section>
-
-      <div className={styles.cards}>
-        <section className={styles.card}>
-          <p className="eyebrow">Мой курс</p>
-          <h2 className={styles.cardTitle}>{course.title}</h2>
-          <p className={styles.cardText}>Куплен {enrollment.purchasedAt} · доступ навсегда</p>
-          <Link href="/course" className={styles.cardLink}>
-            Программа курса <Icon name="arrowRight" size={20} />
-          </Link>
-        </section>
-
-        <section className={styles.card}>
-          <p className="eyebrow">Избранное</p>
-          {favorites.length ? (
-            <ul className={styles.files}>
-              {favorites.map((m) => (
-                <li key={m.id}>
-                  <a
-                    href={m.youtubeId ? `https://www.youtube.com/watch?v=${m.youtubeId}` : (m.file ?? "/materials")}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <span>{m.title}</span>
-                    <span className={styles.fileKind}>{m.type === "VIDEO" ? "Видео" : "PDF"}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
+          <h2 className={styles.continueTitle}>{next ? `Урок ${next.order} · ${next.title}` : course.title}</h2>
+          {completed > 0 && (
             <>
-              <p className={styles.cardText}>Отмечайте материалы сердечком — они появятся здесь.</p>
-              <Link href="/materials" className={styles.cardLink}>
-                Все материалы <Icon name="arrowRight" size={20} />
-              </Link>
+              <div
+                className={styles.progress}
+                role="progressbar"
+                aria-valuenow={completed}
+                aria-valuemin={0}
+                aria-valuemax={allLessons.length}
+                aria-label="Прогресс курса"
+              >
+                <span style={{ width: `${(completed / allLessons.length) * 100}%` }} />
+              </div>
+              <p className={styles.progressText}>
+                Пройдено {completed} из {allLessons.length} уроков
+              </p>
             </>
           )}
-        </section>
-      </div>
+        </div>
+        {!next ? (
+          <Link href="/course" className="btn btn-primary btn-lg">
+            Программа курса
+          </Link>
+        ) : locked ? (
+          <Link href="/checkout" className="btn btn-primary btn-lg">
+            Открыть курс · {formatPrice(course.priceAmount)}
+          </Link>
+        ) : (
+          <Link href={`/course/${next.slug}`} className="btn btn-primary btn-lg">
+            {completed ? "Продолжить урок" : "Начать урок"}
+          </Link>
+        )}
+      </section>
     </>
   );
 }

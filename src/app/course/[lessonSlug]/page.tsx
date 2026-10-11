@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
+import { db } from "@/lib/db";
 import { allLessons, course, formatPrice, getLesson } from "@/lib/mock/course";
 import { getSessionUser } from "@/lib/session";
+import { completeLesson } from "./actions";
 import { LessonSidebar } from "./LessonSidebar";
 import { LessonVideo } from "./LessonVideo";
 import styles from "./page.module.css";
@@ -41,13 +43,19 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
   const user = await getSessionUser();
   const subscribed = !!user?.hasSubscription;
   const hasAccess = lesson.isFree || subscribed;
+  // Урок курса считается пройденным, когда вошедший идёт дальше по кнопке под уроком (у вступления отметки нет)
+  const trackProgress = !!user && !!lessonModule;
+  const progressRows = user
+    ? await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } })
+    : [];
+  const completed = new Set(progressRows.map((r) => r.lessonId));
 
   const next = allLessons[lesson.order];
   const paidRange = allLessons.filter((l) => !l.isFree).map((l) => l.order);
 
   return (
     <main className={`container ${styles.layout}`}>
-      <LessonSidebar lesson={lesson} lessonModule={lessonModule} subscribed={subscribed} />
+      <LessonSidebar lesson={lesson} lessonModule={lessonModule} subscribed={subscribed} completed={completed} />
 
       <article className={styles.main}>
         {hasAccess ? (
@@ -132,9 +140,17 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
         {hasAccess && next && (next.isFree || subscribed) && (
           <div className={styles.next}>
             <h2 className={styles.nextTitle}>Следующий: «{next.title}»</h2>
-            <Link href={`/course/${next.slug}`} className="btn btn-primary">
-              Смотреть урок {next.order}
-            </Link>
+            {trackProgress ? (
+              <form action={completeLesson.bind(null, lesson.id, "next")}>
+                <button type="submit" className="btn btn-primary">
+                  Смотреть урок {next.order}
+                </button>
+              </form>
+            ) : (
+              <Link href={`/course/${next.slug}`} className="btn btn-primary">
+                Смотреть урок {next.order}
+              </Link>
+            )}
           </div>
         )}
 
@@ -146,9 +162,28 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
                 Уроки {paidRange[0]}–{paidRange.at(-1)} откроются после покупки курса
               </p>
             </div>
-            <Link href="/checkout" className="btn btn-primary">
-              Открыть курс · {formatPrice(course.priceAmount)}
-            </Link>
+            {trackProgress ? (
+              <form action={completeLesson.bind(null, lesson.id, "checkout")}>
+                <button type="submit" className="btn btn-primary">
+                  Открыть курс · {formatPrice(course.priceAmount)}
+                </button>
+              </form>
+            ) : (
+              <Link href="/checkout" className="btn btn-primary">
+                Открыть курс · {formatPrice(course.priceAmount)}
+              </Link>
+            )}
+          </div>
+        )}
+
+        {hasAccess && lessonModule && !next && user && (
+          <div className={styles.next}>
+            <h2 className={styles.nextTitle}>Это последний урок курса</h2>
+            <form action={completeLesson.bind(null, lesson.id, "next")}>
+              <button type="submit" className="btn btn-primary">
+                Завершить курс
+              </button>
+            </form>
           </div>
         )}
       </article>

@@ -270,6 +270,7 @@
     border-radius: var(--radius-lg);
   }
 
+  .next form,
   .next :global(.btn) {
     width: 100%;
     white-space: normal;

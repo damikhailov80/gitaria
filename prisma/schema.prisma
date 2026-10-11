@@ -31,6 +31,7 @@ model User {
   sessions          Session[]
   accounts          Account[]
   favoriteMaterials FavoriteMaterial[]
+  lessonProgress    LessonProgress[]
 
   @@map("user")
 }
@@ -91,4 +92,15 @@ model FavoriteMaterial {
 
   @@id([userId, materialId])
   @@map("favorite_material")
+}
+
+/// Пройденные уроки курса. lessonId — id из src/lib/mock/course (уроки пока не в базе)
+model LessonProgress {
+  userId      String
+  lessonId    String
+  completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonId])
+  @@map("lesson_progress")
 }
