@@ -1,6 +1,6 @@
 {
   "intro": {
-    "slug": "urok-0",
+    "slug": "lesson-0",
     "title": "Вводный мультфильм",
     "durationLabel": "2:14",
     "youtubeId": "hSE-67YqTQs",
@@ -12,7 +12,7 @@
       "title": "Часть 1",
       "lessons": [
         {
-          "slug": "urok-1",
+          "slug": "lesson-1",
           "title": "Посадка классического гитариста",
           "durationLabel": "4:34",
           "youtubeId": "IfI4moDskvo",
@@ -25,7 +25,7 @@
           "homework": "Каждый день по 5 минут сидите с гитарой в правильной посадке. Сфотографируйтесь в этом положении — если что-то забудется, по фото легко проверить и восстановить посадку."
         },
         {
-          "slug": "urok-2",
+          "slug": "lesson-2",
           "title": "Постановка правой руки",
           "durationLabel": "11:15",
           "youtubeId": "ti9px2T55Oc",
@@ -39,7 +39,7 @@
           ]
         },
         {
-          "slug": "urok-3",
+          "slug": "lesson-3",
           "title": "Упражнения правой руки. Перебор № 1",
           "durationLabel": "14:05",
           "youtubeId": "ti9px2T55Oc",
@@ -54,7 +54,7 @@
           ]
         },
         {
-          "slug": "urok-4",
+          "slug": "lesson-4",
           "title": "Длительности нот",
           "durationLabel": "13:30",
           "youtubeId": "ti9px2T55Oc",
@@ -65,7 +65,7 @@
           ]
         },
         {
-          "slug": "urok-5",
+          "slug": "lesson-5",
           "title": "Размеры. Переборы № 2 и № 3",
           "durationLabel": "15:20",
           "youtubeId": "ti9px2T55Oc",
@@ -80,7 +80,7 @@
           ]
         },
         {
-          "slug": "urok-6",
+          "slug": "lesson-6",
           "title": "Пьесы на открытых струнах",
           "durationLabel": "16:10",
           "youtubeId": "ti9px2T55Oc",
@@ -94,7 +94,7 @@
           ]
         },
         {
-          "slug": "urok-7",
+          "slug": "lesson-7",
           "title": "Диез, паузы и затакт",
           "durationLabel": "14:45",
           "youtubeId": "ti9px2T55Oc",
@@ -108,7 +108,7 @@
           ]
         },
         {
-          "slug": "urok-8",
+          "slug": "lesson-8",
           "title": "Двойные ноты. Перебор № 4",
           "durationLabel": "13:50",
           "youtubeId": "ti9px2T55Oc",
@@ -123,7 +123,7 @@
           ]
         },
         {
-          "slug": "urok-9",
+          "slug": "lesson-9",
           "title": "Переборы «Вальс» и «Полька»",
           "durationLabel": "15:05",
           "youtubeId": "ti9px2T55Oc",
@@ -138,7 +138,7 @@
           ]
         },
         {
-          "slug": "urok-10",
+          "slug": "lesson-10",
           "title": "Играем вместе",
           "durationLabel": "17:30",
           "youtubeId": "ti9px2T55Oc",
@@ -155,7 +155,7 @@
       "title": "Часть 2",
       "lessons": [
         {
-          "slug": "urok-11",
+          "slug": "lesson-11",
           "title": "Постановка левой руки. Позиция",
           "durationLabel": "13:20",
           "youtubeId": "ti9px2T55Oc",
@@ -170,7 +170,7 @@
           ]
         },
         {
-          "slug": "urok-12",
+          "slug": "lesson-12",
           "title": "Гамма и диапазон нот. «Паучок»",
           "durationLabel": "14:10",
           "youtubeId": "ti9px2T55Oc",
@@ -185,7 +185,7 @@
           ]
         },
         {
-          "slug": "urok-13",
+          "slug": "lesson-13",
           "title": "Ноты на 1, 2 и 3 струнах",
           "durationLabel": "15:40",
           "youtubeId": "ti9px2T55Oc",
@@ -200,7 +200,7 @@
           ]
         },
         {
-          "slug": "urok-14",
+          "slug": "lesson-14",
           "title": "Гамма соль мажор. Пьеса «Ветерок»",
           "durationLabel": "16:25",
           "youtubeId": "ti9px2T55Oc",
@@ -216,7 +216,7 @@
           ]
         },
         {
-          "slug": "urok-15",
+          "slug": "lesson-15",
           "title": "II позиция. Пьесы с драм-машиной",
           "durationLabel": "15:15",
           "youtubeId": "ti9px2T55Oc",
@@ -231,7 +231,7 @@
           ]
         },
         {
-          "slug": "urok-16",
+          "slug": "lesson-16",
           "title": "Гамма соль мажор. Концерт",
           "durationLabel": "17:00",
           "youtubeId": "ti9px2T55Oc",
@@ -246,7 +246,7 @@
           ]
         },
         {
-          "slug": "urok-17",
+          "slug": "lesson-17",
           "title": "Репризы и лиги",
           "durationLabel": "16:40",
           "youtubeId": "ti9px2T55Oc",
@@ -263,7 +263,7 @@
           ]
         },
         {
-          "slug": "urok-18",
+          "slug": "lesson-18",
           "title": "III позиция. Ноты на басовых струнах",
           "durationLabel": "18:05",
           "youtubeId": "ti9px2T55Oc",
@@ -281,7 +281,7 @@
           ]
         },
         {
-          "slug": "urok-19",
+          "slug": "lesson-19",
           "title": "Многоголосие. Синкопа",
           "durationLabel": "17:20",
           "youtubeId": "ti9px2T55Oc",
@@ -296,7 +296,7 @@
           ]
         },
         {
-          "slug": "urok-20",
+          "slug": "lesson-20",
           "title": "Повторение",
           "durationLabel": "18:30",
           "youtubeId": "ti9px2T55Oc",
