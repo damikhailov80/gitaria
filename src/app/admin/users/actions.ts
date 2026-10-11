@@ -5,10 +5,12 @@ import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/session";
 
 // Менять можно только обычных пользователей: условие role: "USER" защищает администраторов.
+// Исключение — подписка: её админ может дать и снять себе самому.
 
 export async function setSubscription(userId: string, hasSubscription: boolean) {
-  await requireAdmin();
-  await db.user.updateMany({ where: { id: userId, role: "USER" }, data: { hasSubscription } });
+  const admin = await requireAdmin();
+  const where = userId === admin.id ? { id: userId } : { id: userId, role: "USER" as const };
+  await db.user.updateMany({ where, data: { hasSubscription } });
   refresh();
 }
 

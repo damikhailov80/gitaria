@@ -18,7 +18,7 @@ export default function UsersPage() {
 }
 
 async function UsersTable() {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const users = await db.user.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
@@ -61,18 +61,20 @@ async function UsersTable() {
                 )}
               </td>
               <td>
-                {u.role === "USER" && (
+                {(u.role === "USER" || u.id === admin.id) && (
                   <div className={styles.actions}>
                     <form action={setSubscription.bind(null, u.id, !u.hasSubscription)}>
                       <button type="submit" className={`btn btn-secondary ${styles.action}`}>
                         {u.hasSubscription ? "Снять подписку" : "Дать подписку"}
                       </button>
                     </form>
-                    <form action={setBlocked.bind(null, u.id, !u.isBlocked)}>
-                      <button type="submit" className={`btn btn-secondary ${styles.action}`}>
-                        {u.isBlocked ? "Разблокировать" : "Заблокировать"}
-                      </button>
-                    </form>
+                    {u.role === "USER" && (
+                      <form action={setBlocked.bind(null, u.id, !u.isBlocked)}>
+                        <button type="submit" className={`btn btn-secondary ${styles.action}`}>
+                          {u.isBlocked ? "Разблокировать" : "Заблокировать"}
+                        </button>
+                      </form>
+                    )}
                   </div>
                 )}
               </td>
