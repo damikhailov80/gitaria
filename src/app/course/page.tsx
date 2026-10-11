@@ -32,28 +32,42 @@ export default function CoursePage() {
           </Suspense>
         </div>
 
-        <aside className={styles.priceCard}>
-          <p className={styles.price}>{formatPrice(course.priceAmount)}</p>
-          <p className={styles.priceNote}>Разовая оплата. Все {allLessons.length} уроков и материалы — навсегда в вашем кабинете.</p>
-          <Link href="/checkout" className="btn btn-primary btn-block">
-            Купить курс
-          </Link>
-          <Link href={`/course/${allLessons[0].slug}`} className="btn btn-secondary btn-block">
-            Сначала бесплатный урок
-          </Link>
-          <ul className={styles.notes}>
-            <li>
-              <Icon name="check" size={18} />
-              Безопасная оплата картой через Stripe
-            </li>
-            <li>
-              <Icon name="check" size={18} />
-              BLIK и Przelewy24
-            </li>
-          </ul>
-        </aside>
+        {/* Купившему курс не предлагаем его купить — карточку не показываем и до загрузки сессии */}
+        <Suspense fallback={null}>
+          <SessionPriceCard />
+        </Suspense>
       </main>
     </>
+  );
+}
+
+async function SessionPriceCard() {
+  const user = await getSessionUser();
+  return user?.hasSubscription ? null : <PriceCard />;
+}
+
+function PriceCard() {
+  return (
+    <aside className={styles.priceCard}>
+      <p className={styles.price}>{formatPrice(course.priceAmount)}</p>
+      <p className={styles.priceNote}>Разовая оплата. Все {allLessons.length} уроков и материалы — навсегда в вашем кабинете.</p>
+      <Link href="/checkout" className="btn btn-primary btn-block">
+        Купить курс
+      </Link>
+      <Link href={`/course/${allLessons[0].slug}`} className="btn btn-secondary btn-block">
+        Сначала бесплатный урок
+      </Link>
+      <ul className={styles.notes}>
+        <li>
+          <Icon name="check" size={18} />
+          Безопасная оплата картой через Stripe
+        </li>
+        <li>
+          <Icon name="check" size={18} />
+          BLIK и Przelewy24
+        </li>
+      </ul>
+    </aside>
   );
 }
 
