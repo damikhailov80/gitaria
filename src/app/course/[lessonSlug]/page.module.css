@@ -81,6 +81,19 @@
   transform: scale(1.04);
 }
 
+/* Закрытый урок: вместо кнопки play — замок */
+.videoLock {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--color-neutral-100);
+  color: var(--color-text-muted);
+  box-shadow: var(--shadow-lg);
+}
+
 .player {
   position: absolute;
   inset: 0;
@@ -238,7 +251,8 @@
     border-radius: var(--radius-md);
   }
 
-  .play {
+  .play,
+  .videoLock {
     width: 72px;
     height: 72px;
   }

@@ -5,7 +5,16 @@ import type { Lesson, Module } from "@/lib/types";
 import styles from "./page.module.css";
 
 /** Левая панель урока: вступление + модуль текущего урока (для вступления — первый модуль) */
-export function LessonSidebar({ lesson, lessonModule }: { lesson: Lesson; lessonModule: Module | null }) {
+export function LessonSidebar({
+  lesson,
+  lessonModule,
+  subscribed,
+}: {
+  lesson: Lesson;
+  lessonModule: Module | null;
+  /** С подпиской замков у платных уроков нет */
+  subscribed: boolean;
+}) {
   const sideModule = lessonModule ?? course.modules[0];
   const otherModules = course.modules.filter((m) => m.id !== sideModule.id).map((m) => m.order);
   const otherCount = allLessons.length - sideModule.lessons.length;
@@ -32,7 +41,7 @@ export function LessonSidebar({ lesson, lessonModule }: { lesson: Lesson; lesson
       <ol className={styles.sideList}>
         {sideModule.lessons.map((l) => (
           <li key={l.id}>
-            <LessonRow lesson={l} variant="compact" active={l.id === lesson.id} />
+            <LessonRow lesson={l} variant="compact" active={l.id === lesson.id} locked={!l.isFree && !subscribed} />
           </li>
         ))}
       </ol>
