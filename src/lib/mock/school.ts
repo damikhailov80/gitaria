@@ -1,3 +1,5 @@
+import { allLessons } from "./course";
+
 export const teacher = {
   name: "Наталья",
   photo: "/images/teacher.jpg",
@@ -6,7 +8,7 @@ export const teacher = {
 export const history = [
   { date: "9 января 2025", text: "Школа открылась", marker: "accent" },
   { date: "1 июня", text: "Первый концерт учеников", marker: "green" },
-  { date: "Сейчас", text: "Онлайн-курс из 24 уроков", marker: "ring" },
+  { date: "Сейчас", text: `Онлайн-курс из ${allLessons.length} уроков`, marker: "ring" },
 ] as const;
 
 /** Telegram преподавателя: туда же ведёт запись на офлайн-урок. */

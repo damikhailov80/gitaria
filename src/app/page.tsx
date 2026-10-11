@@ -89,7 +89,7 @@ export default function HomePage() {
               <span className={`tag tag-neutral ${styles.onlineTag}`}>Онлайн · в своём темпе</span>
               <h3 className={styles.wayTitle}>Видеокурс «{course.title}»</h3>
               <p className={styles.wayText}>
-                24 урока с видео, объяснениями и нотами в PDF. Занимайтесь из любого города, когда удобно.
+                {allLessons.length} уроков с видео, объяснениями и нотами в PDF. Занимайтесь из любого города, когда удобно.
               </p>
               <ul className={styles.checks}>
                 <li>

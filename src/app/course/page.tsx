@@ -42,7 +42,7 @@ export default function CoursePage() {
 
         <aside className={styles.priceCard}>
           <p className={styles.price}>{formatPrice(course.priceAmount)}</p>
-          <p className={styles.priceNote}>Разовая оплата. Все 24 урока и материалы — навсегда в вашем кабинете.</p>
+          <p className={styles.priceNote}>Разовая оплата. Все {allLessons.length} уроков и материалы — навсегда в вашем кабинете.</p>
           <Link href="/checkout" className="btn btn-primary btn-block">
             Купить курс
           </Link>

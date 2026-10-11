@@ -16,6 +16,8 @@ export type Lesson = {
   title: string;
   isFree: boolean;
   durationLabel?: string;
+  /** id видео на YouTube */
+  youtubeId?: string;
   /** Абзацы основного текста урока */
   content?: string[];
   /** Блок «Что сделать после урока» */

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
-import { course, formatPrice } from "@/lib/mock/course";
+import { allLessons, course, formatPrice } from "@/lib/mock/course";
 import { CheckoutForm } from "./CheckoutForm";
 import styles from "./page.module.css";
 
@@ -25,7 +25,7 @@ export default function CheckoutPage() {
 
         <aside className={styles.summary}>
           <h2 className={styles.summaryTitle}>{course.title}</h2>
-          <p className={styles.summaryNote}>24 урока · материалы PDF · доступ навсегда</p>
+          <p className={styles.summaryNote}>{allLessons.length} уроков · материалы PDF · доступ навсегда</p>
           <dl className={styles.lines}>
             <div>
               <dt>Курс</dt>
