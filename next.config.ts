@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [new URL("https://i.ytimg.com/vi/**")],
   },
+  experimental: {
+    agentUpgrade: "security",
+  },
 };
 
 export default nextConfig;
