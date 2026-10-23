@@ -168,8 +168,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  width: 100%;
   padding: 20px 22px;
+  border: none;
   border-radius: var(--radius-lg);
+  text-align: left;
   background: var(--color-surface);
   color: var(--color-text);
   transition: background-color 0.15s;

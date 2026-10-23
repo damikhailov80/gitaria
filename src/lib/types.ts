@@ -6,11 +6,9 @@ import type { IconName } from "@/components/Icon";
 export type Attachment = {
   id: string;
   title: string;
-  kind: "pdf" | "image";
   /** Подпись под названием, например «PDF · 1,2 МБ» */
   meta: string;
-  href: string;
-};
+} & ({ kind: "pdf" | "image"; href: string } | { kind: "video"; /** id видео на YouTube */ youtubeId: string });
 
 export type Lesson = {
   id: string;

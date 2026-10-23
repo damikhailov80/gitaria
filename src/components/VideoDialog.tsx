@@ -6,7 +6,13 @@ import { Icon } from "./Icon";
 import styles from "./VideoDialog.module.css";
 
 /** Модальное окно с плеером YouTube. Плеер есть в DOM, только пока окно открыто. */
-export function VideoDialog({ video, onClose }: { video: Material | null; onClose: () => void }) {
+export function VideoDialog({
+  video,
+  onClose,
+}: {
+  video: Pick<Material, "title" | "youtubeId"> | null;
+  onClose: () => void;
+}) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {

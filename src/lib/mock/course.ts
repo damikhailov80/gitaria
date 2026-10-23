@@ -2,9 +2,12 @@ import type { Course, Lesson, Module } from "@/lib/types";
 import data from "./course.json";
 
 /** Структура course.json: вступление + модули → уроки; номера уроков и подписи к материалам считаются здесь.
- *  Материал с pages — PDF, без — изображение. */
+ *  Материал с youtubeId — видео, с pages — PDF, иначе — изображение. */
 type LessonData = Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
-  attachments?: { id: string; title: string; pages?: number; file: string }[];
+  attachments?: (
+    | { id: string; title: string; pages?: number; file: string }
+    | { id: string; title: string; youtubeId: string; durationLabel: string }
+  )[];
 };
 
 type CourseData = {
@@ -35,11 +38,16 @@ const modules: Module[] = (data as CourseData).modules.map((m, i) => ({
       id: `l${order}`,
       order,
       isFree: order === 1,
-      attachments: attachments?.map(({ pages, file, ...a }) =>
-        pages
-          ? { ...a, kind: "pdf", meta: `PDF · ${pages} стр.`, href: file }
-          : { ...a, kind: "image", meta: `Изображение · ${file.split(".").pop()!.toUpperCase()}`, href: file },
-      ),
+      attachments: attachments?.map((a) => {
+        if ("youtubeId" in a) {
+          const { durationLabel, ...rest } = a;
+          return { ...rest, kind: "video", meta: `Видео · ${durationLabel}` };
+        }
+        const { pages, file, ...rest } = a;
+        return pages
+          ? { ...rest, kind: "pdf", meta: `PDF · ${pages} стр.`, href: file }
+          : { ...rest, kind: "image", meta: `Изображение · ${file.split(".").pop()!.toUpperCase()}`, href: file };
+      }),
     };
     lessons.push(lesson);
     return lesson;

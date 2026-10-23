@@ -92,7 +92,8 @@
           "attachments": [
             { "id": "durations", "title": "Длительности нот и счёт", "file": "/materials/course/lesson-4/f3a44c12588601f8def413e75b74060f.jpg" },
             { "id": "durations-cake", "title": "Длительности: делим «торт»", "file": "/materials/course/lesson-4/e5ac60b4e1a313db848c94d2dc7d4066.jpg" },
-            { "id": "open-strings-rhythm", "title": "Открытые струны 1–3", "file": "/materials/course/lesson-4/296dcf4838ace9c681c6ba73599aa1fe.jpg" }
+            { "id": "open-strings-rhythm", "title": "Открытые струны 1–3", "file": "/materials/course/lesson-4/296dcf4838ace9c681c6ba73599aa1fe.jpg" },
+            { "id": "durations-video", "title": "Длительности нот", "youtubeId": "G8ae8e1HFQo", "durationLabel": "1:18" }
           ]
         },
         {

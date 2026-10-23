@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { allLessons, course, formatPrice, getLesson } from "@/lib/mock/course";
 import { getSessionUser } from "@/lib/session";
 import { completeLesson } from "./actions";
+import { LessonAttachments } from "./LessonAttachments";
 import { LessonSidebar } from "./LessonSidebar";
 import { LessonVideo } from "./LessonVideo";
 import styles from "./page.module.css";
@@ -118,20 +119,7 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
             {lesson.attachments && lesson.attachments.length > 0 && (
               <aside className={styles.materials}>
                 <p className="eyebrow">Материалы</p>
-                <ul>
-                  {lesson.attachments.map((a) => (
-                    <li key={a.id}>
-                      <a href={a.href} className={styles.attachment} target="_blank" rel="noopener">
-                        <Icon name={a.kind === "image" ? "image" : "doc"} size={28} className={styles.docIcon} />
-                        <span className={styles.attachmentText}>
-                          <span className={styles.attachmentTitle}>{a.title}</span>
-                          <span className={styles.attachmentMeta}>{a.meta}</span>
-                        </span>
-                        <Icon name="download" size={22} />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <LessonAttachments attachments={lesson.attachments} />
               </aside>
             )}
           </div>
