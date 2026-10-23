@@ -6,8 +6,8 @@
     "title": "Simply Guitar Book One",
     "author": "Vincent Lindsey-Clark, Alexander MacDonald",
     "pages": 46,
-    "file": "/materials/pdf/simply-guitar-book-one.pdf",
-    "cover": "/materials/covers/simply-guitar-book-one.jpg"
+    "file": "/materials/shared/pdf/simply-guitar-book-one.pdf",
+    "cover": "/materials/shared/covers/simply-guitar-book-one.jpg"
   },
   {
     "id": "guitar-from-the-very-beginning",
@@ -16,8 +16,8 @@
     "title": "Гитара с самого начала",
     "author": "Виктория Куликовская",
     "pages": 34,
-    "file": "/materials/pdf/guitar-from-the-very-beginning.pdf",
-    "cover": "/materials/covers/guitar-from-the-very-beginning.jpg"
+    "file": "/materials/shared/pdf/guitar-from-the-very-beginning.pdf",
+    "cover": "/materials/shared/covers/guitar-from-the-very-beginning.jpg"
   },
   {
     "id": "kids-jazz-album-1",
@@ -26,8 +26,8 @@
     "title": "Детский джазовый альбом. Выпуск 1",
     "author": "Александр Виницкий",
     "pages": 26,
-    "file": "/materials/pdf/kids-jazz-album-1.pdf",
-    "cover": "/materials/covers/kids-jazz-album-1.jpg"
+    "file": "/materials/shared/pdf/kids-jazz-album-1.pdf",
+    "cover": "/materials/shared/covers/kids-jazz-album-1.jpg"
   },
   {
     "id": "first-class-guitar",
@@ -36,8 +36,24 @@
     "title": "Gitara pierwsza klasa / First Class Guitar",
     "author": "Tatiana Stachak",
     "pages": 94,
-    "file": "/materials/pdf/first-class-guitar.pdf",
-    "cover": "/materials/covers/first-class-guitar.jpg"
+    "file": "/materials/shared/pdf/first-class-guitar.pdf",
+    "cover": "/materials/shared/covers/first-class-guitar.jpg"
+  },
+  {
+    "id": "finger-names",
+    "slug": "finger-names",
+    "type": "IMAGE",
+    "title": "Обозначения пальцев левой и правой руки",
+    "author": "Gitaria",
+    "file": "/materials/shared/images/finger-names.jpg"
+  },
+  {
+    "id": "right-hand-position",
+    "slug": "right-hand-position",
+    "type": "IMAGE",
+    "title": "Посадка и положение правой руки",
+    "author": "Gitaria",
+    "file": "/materials/shared/images/right-hand-position.jpg"
   },
   {
     "id": "what-you-need-to-start",

@@ -1,9 +1,10 @@
 import type { Course, Lesson, Module } from "@/lib/types";
 import data from "./course.json";
 
-/** Структура course.json: вступление + модули → уроки; номера уроков и подписи к PDF считаются здесь */
+/** Структура course.json: вступление + модули → уроки; номера уроков и подписи к материалам считаются здесь.
+ *  Материал с pages — PDF, без — изображение. */
 type LessonData = Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
-  attachments?: { id: string; title: string; pages: number; file: string }[];
+  attachments?: { id: string; title: string; pages?: number; file: string }[];
 };
 
 type CourseData = {
@@ -34,7 +35,11 @@ const modules: Module[] = (data as CourseData).modules.map((m, i) => ({
       id: `l${order}`,
       order,
       isFree: order === 1,
-      attachments: attachments?.map(({ pages, file, ...a }) => ({ ...a, meta: `PDF · ${pages} стр.`, href: file })),
+      attachments: attachments?.map(({ pages, file, ...a }) =>
+        pages
+          ? { ...a, kind: "pdf", meta: `PDF · ${pages} стр.`, href: file }
+          : { ...a, kind: "image", meta: `Изображение · ${file.split(".").pop()!.toUpperCase()}`, href: file },
+      ),
     };
     lessons.push(lesson);
     return lesson;

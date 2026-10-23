@@ -15,6 +15,13 @@ const paths = {
       <path d="M14 3v5h5M9 13h6M9 17h6" />
     </>
   ),
+  image: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="9" cy="9.5" r="1.5" />
+      <path d="m21 16-5-5-9 9" />
+    </>
+  ),
   download: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" />,
   mic: (
     <>

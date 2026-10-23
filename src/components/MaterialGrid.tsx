@@ -12,6 +12,7 @@ import { VideoDialog } from "./VideoDialog";
 const tagClass: Record<MaterialType, string> = {
   VIDEO: "tag tag-accent",
   SHEET_MUSIC: "tag tag-green",
+  IMAGE: "tag tag-neutral",
 };
 
 /**

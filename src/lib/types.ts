@@ -6,6 +6,7 @@ import type { IconName } from "@/components/Icon";
 export type Attachment = {
   id: string;
   title: string;
+  kind: "pdf" | "image";
   /** Подпись под названием, например «PDF · 1,2 МБ» */
   meta: string;
   href: string;
@@ -50,7 +51,7 @@ export type Course = {
   modules: Module[];
 };
 
-export type MaterialType = "VIDEO" | "SHEET_MUSIC";
+export type MaterialType = "VIDEO" | "SHEET_MUSIC" | "IMAGE";
 
 export type Material = {
   id: string;

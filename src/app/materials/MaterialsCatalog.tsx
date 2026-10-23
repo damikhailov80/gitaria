@@ -10,6 +10,7 @@ const filters: { value: MaterialType | "ALL"; label: string }[] = [
   { value: "ALL", label: "Все" },
   { value: "VIDEO", label: "Видео" },
   { value: "SHEET_MUSIC", label: "Ноты" },
+  { value: "IMAGE", label: "Изображения" },
 ];
 
 const normalize = (s: string) => s.toLowerCase().replaceAll("ё", "е").trim();

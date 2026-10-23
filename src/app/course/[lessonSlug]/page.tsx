@@ -121,8 +121,12 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
                 <ul>
                   {lesson.attachments.map((a) => (
                     <li key={a.id}>
-                      <a href={a.href} className={styles.attachment}>
-                        <Icon name="doc" size={28} className={styles.docIcon} />
+                      <a
+                        href={a.href}
+                        className={styles.attachment}
+                        {...(a.kind === "image" && { target: "_blank", rel: "noopener" })}
+                      >
+                        <Icon name={a.kind === "image" ? "image" : "doc"} size={28} className={styles.docIcon} />
                         <span className={styles.attachmentText}>
                           <span className={styles.attachmentTitle}>{a.title}</span>
                           <span className={styles.attachmentMeta}>{a.meta}</span>
