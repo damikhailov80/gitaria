@@ -1,75 +1,76 @@
 # Gitaria
 
-Сайт школы игры на гитаре **gitaria.pl**: главная, онлайн-курс «Гитара с нуля» (первый урок бесплатный),
-открытые материалы, тюнер, метроном, личный кабинет, оплата через Stripe.
+Website of the guitar school **gitaria.pl**: home page, online course «Гитара с нуля» ("Guitar from scratch", the first lesson is free),
+open materials, tuner, metronome, personal account, payment via Stripe.
 
-## Текущий этап
+## Current stage
 
-- Вёрстка всех экранов по макету.
-- Пользователи — в PostgreSQL (Prisma 7 + Better Auth). Вход и регистрация только через Google.
-  Роли USER/ADMIN (админы — `ADMIN_EMAILS` в `src/lib/auth.ts`), флаг подписки, блокировка, мягкое удаление.
-  `/account*` и `/admin/*` требуют входа; `/admin/users` — только админам.
-  Избранные материалы — в базе (`FavoriteMaterial`), кнопка-сердечко на `/materials` только для вошедших, список — в кабинете (`/account/materials`).
-- Остальные данные — моки из `src/lib/mock/`. Stripe подключим позже.
-- Все видео (уроки и материалы) — на YouTube, по `youtubeId`.
-- Платные уроки открыты только с подпиской (`hasSubscription`); остальным на странице урока — заглушка без видео, текста и PDF.
-  Купившему курс его не предлагаем: карточки с ценой на `/course` нет, `/checkout` редиректит в `/account`.
-- Прогресс курса — в базе (`LessonProgress`): урок отмечается пройденным, когда вошедший идёт дальше по кнопке под ним
-  («Смотреть урок N», «Открыть курс» — к оплате, на последнем — «Завершить курс»).
-  Кабинет (`/account`) показывает только прогресс: начать курс / продолжить / дальше — после покупки / курс пройден.
-- Тюнер и метроном — рабочие (Web Audio API).
-- Кнопка «Записаться на урок» (офлайн-уроки) открывает Telegram преподавателя (`telegramHref` в `src/lib/mock/school.ts`).
+- Layout of all screens according to the design.
+- Users — in PostgreSQL (Prisma 7 + Better Auth). Sign-in and sign-up via Google only.
+  Roles USER/ADMIN (admins — `ADMIN_EMAILS` in `src/lib/auth.ts`), subscription flag, blocking, soft deletion.
+  `/account*` and `/admin/*` require sign-in; `/admin/users` — admins only.
+  Favorite materials are in the database (`FavoriteMaterial`); the heart button on `/materials` is only for signed-in users, the list is in the account (`/account/materials`).
+- All other data — mocks from `src/lib/mock/`. Stripe will be connected later.
+- All videos (lessons and materials) are on YouTube, referenced by `youtubeId`.
+- Paid lessons are open only with a subscription (`hasSubscription`); everyone else sees a placeholder on the lesson page — no video, text or PDF.
+  The course is not offered to someone who has already bought it: no price card on `/course`, `/checkout` redirects to `/account`.
+- Course progress is in the database (`LessonProgress`): a lesson is marked completed when a signed-in user moves on via the button below it
+  («Смотреть урок N», «Открыть курс» — to payment, on the last one — «Завершить курс»).
+  The account page (`/account`) shows only progress: start the course / continue / next — after purchase / course completed.
+- Tuner and metronome are working (Web Audio API).
+- The «Записаться на урок» button (offline lessons) opens the teacher's Telegram (`telegramHref` in `src/lib/mock/school.ts`).
 
-## Стек и команды
+## Stack and commands
 
-Next.js 16 (App Router, TypeScript, Cache Components), React 19, CSS Modules, без Tailwind.
+Next.js 16 (App Router, TypeScript, Cache Components), React 19, CSS Modules, no Tailwind.
 
 ```bash
-npm run db:up       # PostgreSQL в Docker (docker-compose.yml)
-npm run db:migrate  # миграции Prisma (prisma migrate dev)
-npm run db:studio   # Prisma Studio — данные базы в браузере
-npm run dev     # dev-сервер
-npm run build   # сборка + проверка типов
+npm run db:up       # PostgreSQL in Docker (docker-compose.yml)
+npm run db:migrate  # Prisma migrations (prisma migrate dev)
+npm run db:studio   # Prisma Studio — database data in the browser
+npm run dev     # dev server
+npm run build   # build + type check
 npm run lint    # ESLint
 ```
 
-## Структура
+## Structure
 
 ```
-src/app/                    страницы
-  page.tsx                  главная
-  course/                   страница курса; [lessonSlug]/ — урок
-  materials/                открытые материалы (фильтр на клиенте)
-  tools/tuner/              тюнер (микрофон + pitchy)
-  tools/metronome/          метроном
-  account/ checkout/ login/ кабинет (+ materials/ — избранное, settings/ — удаление аккаунта), оплата, вход через Google
-  privacy/                  политика конфиденциальности (GDPR); ссылки — в футере и на /login
-  admin/users/              пользователи: подписка и блокировка (только ADMIN)
-  api/auth/[...all]/        обработчик Better Auth
-src/components/             общие компоненты (Header, Logo, Icon, LessonRow, …)
-src/lib/auth.ts             конфиг Better Auth (Google, хуки: роль админа, блокировка, восстановление)
-src/lib/session.ts          getCurrentUser() / requireAdmin() — только внутри <Suspense>
-src/lib/db.ts               Prisma Client; схема — prisma/schema.prisma, клиент генерируется в src/generated/
-src/lib/types.ts            типы данных (курс, материалы, пользователь)
-src/lib/mock/               моки: курс, материалы, школа, пользователь
-src/lib/audio/              pitch.ts (частота → нота/центы), tunings.ts, metronome.ts (планировщик)
-design/                     PNG-экраны макета из Claude Design — эталон вёрстки
-public/materials/shared/    публичные материалы: PDF нот (pdf/) и их обложки (covers/), изображения (images/); список — src/lib/mock/materials.json
-                            (там же видео: только YouTube, по youtubeId; смотрятся в модальном окне VideoDialog)
-public/materials/course/    приватные материалы уроков: lesson-N/
-public/logo*.svg            логотип: полный, знак, надпись (векторизован из исходного JPEG); favicon/icon/apple-icon — в src/app/
+src/app/                    pages
+  page.tsx                  home page
+  course/                   course page; [lessonSlug]/ — lesson
+  materials/                open materials (client-side filter)
+  tools/tuner/              tuner (microphone + pitchy)
+  tools/metronome/          metronome
+  account/ checkout/ login/ account (+ materials/ — favorites, settings/ — account deletion), payment, Google sign-in
+  privacy/                  privacy policy (GDPR); links — in the footer and on /login
+  admin/users/              users: subscription and blocking (ADMIN only)
+  api/auth/[...all]/        Better Auth handler
+src/components/             shared components (Header, Logo, Icon, LessonRow, …)
+src/lib/auth.ts             Better Auth config (Google, hooks: admin role, blocking, restoration)
+src/lib/session.ts          getCurrentUser() / requireAdmin() — only inside <Suspense>
+src/lib/db.ts               Prisma Client; schema — prisma/schema.prisma, client is generated into src/generated/
+src/lib/types.ts            data types (course, materials, user)
+src/lib/mock/               mocks: course, materials, school, user
+src/lib/audio/              pitch.ts (frequency → note/cents), tunings.ts, metronome.ts (scheduler)
+design/                     PNG screens of the design from Claude Design — the layout reference
+public/materials/shared/    public materials: sheet music PDFs (pdf/) and their covers (covers/), images (images/); the list — src/lib/mock/materials.json
+                            (videos are listed there too: YouTube only, by youtubeId; watched in the VideoDialog modal)
+public/materials/course/    private lesson materials: lesson-N/
+public/logo*.svg            logo: full, mark, wordmark (vectorized from the source JPEG); favicon/icon/apple-icon — in src/app/
 ```
 
-## Правила
+## Rules
 
-- **Делать только то, что попросили.** Не добавлять фичи, разделы, страницы и требования сверх запроса. Если что-то кажется нужным — спросить.
-- Цвета — только через CSS-переменные из `src/app/globals.css` (`--color-*`). Никаких hex в компонентах.
-  Общие классы там же: `.btn`, `.tag`, `.segmented`, `.input`, `.eyebrow`, `.container`.
-- Вёрстка по макету в `design/`; на узких экранах колонки складываются в одну, боковой отступ 16px.
-- Интерфейс только на русском. Цены в злотых (`formatPrice` из `src/lib/mock/course.ts`).
-- Страницы получают данные из моков через функции/константы `src/lib/mock`, чтобы потом заменить их на Prisma без переделки вёрстки.
-- **Материалы — публичные и приватные.** Публичные (открытые материалы) — в `public/materials/shared/`,
-  с осмысленными именами на английском (`simply-guitar-book-one.pdf`). Приватные (материалы уроков) —
-  в `public/materials/course/lesson-N/`, имена — случайные хэши, чтобы их нельзя было найти перебором ссылок.
-  Урок может ссылаться и на публичные материалы из `shared/`.
-- **Убирать за собой.** После проверок удалять временные файлы (скриншоты, логи Playwright, скрипты), останавливать запущенные для проверки серверы. Временное — в scratchpad, не в проекте.
+- **Do only what was asked.** Do not add features, sections, pages or requirements beyond the request. If something seems necessary — ask.
+- Colors — only via CSS variables from `src/app/globals.css` (`--color-*`). No hex in components.
+  Shared classes are there too: `.btn`, `.tag`, `.segmented`, `.input`, `.eyebrow`, `.container`.
+- Layout follows the design in `design/`; on narrow screens columns stack into one, side padding 16px.
+- The interface is in Russian only. Prices in złoty (`formatPrice` from `src/lib/mock/course.ts`).
+- Documentation, agent instructions and commit messages — in English.
+- Pages get data from mocks via functions/constants in `src/lib/mock`, so they can later be replaced with Prisma without reworking the layout.
+- **Materials are public and private.** Public ones (open materials) go in `public/materials/shared/`,
+  with meaningful English names (`simply-guitar-book-one.pdf`). Private ones (lesson materials) go in
+  `public/materials/course/lesson-N/`, named with random hashes so they cannot be found by guessing links.
+  A lesson may also link to public materials from `shared/`.
+- **Clean up after yourself.** After checks, delete temporary files (screenshots, Playwright logs, scripts) and stop servers started for checking. Temporary files go in the scratchpad, not in the project.

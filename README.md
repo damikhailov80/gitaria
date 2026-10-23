@@ -1,68 +1,68 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## База данных: запуск, миграции, сид
+## Database: setup, migrations, seed
 
-Локально база — PostgreSQL 17 в Docker (`docker-compose.yml`), ORM — Prisma 7. Схема — `prisma/schema.prisma`,
-миграции — `prisma/migrations/`. Нужен запущенный Docker Desktop.
+Locally the database is PostgreSQL 17 in Docker (`docker-compose.yml`), the ORM is Prisma 7. Schema — `prisma/schema.prisma`,
+migrations — `prisma/migrations/`. Docker Desktop must be running.
 
-Первый запуск:
+First run:
 
 ```bash
-cp .env.example .env.local  # заполнить BETTER_AUTH_SECRET и GOOGLE_* (см. ниже)
-npm install             # заодно генерирует Prisma Client в src/generated/ (postinstall)
-npm run db:up           # поднять PostgreSQL в Docker (порт 5432, данные в томе pgdata)
-npm run db:migrate      # применить миграции к базе
+cp .env.example .env.local  # fill in BETTER_AUTH_SECRET and GOOGLE_* (see below)
+npm install             # also generates Prisma Client into src/generated/ (postinstall)
+npm run db:up           # start PostgreSQL in Docker (port 5432, data in the pgdata volume)
+npm run db:migrate      # apply migrations to the database
 npm run dev             # http://localhost:3000
 ```
 
-Сида нет, он не нужен. Пользователи появляются сами при первом входе через Google. Администраторы
-(d.a.mikhailov80@gmail.com, natahasim.ns@gmail.com) получают роль ADMIN автоматически при первом входе —
-список в `ADMIN_EMAILS` в `src/lib/auth.ts`.
+There is no seed and none is needed. Users are created automatically on their first Google sign-in. Administrators
+(d.a.mikhailov80@gmail.com, natahasim.ns@gmail.com) get the ADMIN role automatically on first sign-in —
+the list is in `ADMIN_EMAILS` in `src/lib/auth.ts`.
 
-Полезные команды:
-
-```bash
-npm run db:migrate -- --name add_something   # после правки schema.prisma: создать и применить миграцию
-npx prisma generate                          # перегенерировать Prisma Client
-npm run db:studio                            # Prisma Studio: посмотреть и поправить данные в браузере
-npx prisma migrate reset                     # стереть базу и накатить миграции заново (все данные пропадут)
-docker compose down                          # остановить базу (данные сохранятся в томе)
-```
-
-### Миграции на продакшене
-
-На проде — только `prisma migrate deploy`, не `migrate dev`. Он применяет ещё не накатанные миграции из
-`prisma/migrations/` и ничего не генерирует и не сбрасывает.
-
-`prisma.config.ts` всегда читает `.env.local`, но переменные из окружения важнее. Поэтому прод-овый
-`DATABASE_URL` передаём из `.env.prod` через окружение, в подоболочке (скобки), чтобы он не остался в терминале:
+Useful commands:
 
 ```bash
-(set -a; source .env.prod; set +a; npx prisma migrate status)   # что уже накатано, что нет
-(set -a; source .env.prod; set +a; npx prisma migrate deploy)   # накатить
+npm run db:migrate -- --name add_something   # after editing schema.prisma: create and apply a migration
+npx prisma generate                          # regenerate Prisma Client
+npm run db:studio                            # Prisma Studio: view and edit data in the browser
+npx prisma migrate reset                     # wipe the database and re-apply migrations (all data is lost)
+docker compose down                          # stop the database (data is kept in the volume)
 ```
 
-- Сначала миграция, потом выкладка кода.
-- Если база за пулером соединений (Neon, Supabase и т. п.), для миграций нужен прямой URL, не пулерный.
+### Migrations in production
 
-## Вход на сайт: Better Auth
+In production use only `prisma migrate deploy`, not `migrate dev`. It applies the migrations from
+`prisma/migrations/` that have not been applied yet, and does not generate or reset anything.
 
-[Better Auth](https://www.better-auth.com) — библиотека, через которую сделан вход на сайт. Она проводит
-пользователя через Google, создаёт его запись в базе, ставит браузеру cookie сессии, а при выходе удаляет сессию.
-Она бесплатная, с открытым кодом и работает внутри нашего сайта, а не как внешний сервис. Данные хранятся в нашей
-PostgreSQL, в таблицах `user`, `session`, `account`, `verification`. Конфиг — `src/lib/auth.ts`.
+`prisma.config.ts` always reads `.env.local`, but environment variables take precedence. So the production
+`DATABASE_URL` is passed from `.env.prod` via the environment, in a subshell (parentheses), so it does not linger in the terminal:
 
-Настройки в `.env.local`:
+```bash
+(set -a; source .env.prod; set +a; npx prisma migrate status)   # what is applied and what is not
+(set -a; source .env.prod; set +a; npx prisma migrate deploy)   # apply
+```
 
-- **`BETTER_AUTH_SECRET`** — секретный ключ, которым подписываются cookie сессий, чтобы их нельзя было подделать.
-  Это случайная строка, её никому нельзя показывать и нельзя коммитить. Создаётся командой `openssl rand -base64 32`.
-  Для продакшена нужна отдельная, своя строка. Если её поменять, все пользователи просто выйдут из кабинета
-  и войдут заново.
-- **`BETTER_AUTH_URL`** — адрес сайта. Из него библиотека собирает адрес возврата после Google
-  (`…/api/auth/callback/google`). Локально это `http://localhost:3000`, на продакшене — `https://gitaria.pl`.
+- Migrate first, then deploy the code.
+- If the database is behind a connection pooler (Neon, Supabase, etc.), migrations need the direct URL, not the pooled one.
 
-Почему не Auth.js: команда Better Auth взяла Auth.js под своё крыло, и теперь он только поддерживается, без развития.
-Для новых проектов они советуют Better Auth.
+## Sign-in: Better Auth
+
+[Better Auth](https://www.better-auth.com) is the library that powers sign-in on the site. It takes the
+user through Google, creates their record in the database, sets the session cookie in the browser, and deletes the session on sign-out.
+It is free, open source, and runs inside our site rather than as an external service. Data is stored in our
+PostgreSQL, in the `user`, `session`, `account`, `verification` tables. Config — `src/lib/auth.ts`.
+
+Settings in `.env.local`:
+
+- **`BETTER_AUTH_SECRET`** — the secret key used to sign session cookies so they cannot be forged.
+  It is a random string; never show it to anyone and never commit it. Generate it with `openssl rand -base64 32`.
+  Production needs its own separate string. If it is changed, all users are simply signed out
+  and sign in again.
+- **`BETTER_AUTH_URL`** — the site URL. The library builds the Google callback URL from it
+  (`…/api/auth/callback/google`). Locally it is `http://localhost:3000`, in production — `https://gitaria.pl`.
+
+Why not Auth.js: the Better Auth team took Auth.js under its wing, and it is now only maintained, not developed further.
+For new projects they recommend Better Auth.
 
 ## Getting Started
 
