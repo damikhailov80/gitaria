@@ -5,16 +5,16 @@ export type NoteName = (typeof NOTE_NAMES)[number];
 export type Note = {
   name: NoteName;
   octave: number;
-  /** MIDI-номер: A4 = 69 */
+  /** MIDI number: A4 = 69 */
   midi: number;
 };
 
-/** Частота ноты по MIDI-номеру. */
+/** Note frequency by MIDI number. */
 export function midiToFrequency(midi: number, a4 = 440): number {
   return a4 * 2 ** ((midi - 69) / 12);
 }
 
-/** Нота по MIDI-номеру. */
+/** Note by MIDI number. */
 export function midiToNote(midi: number): Note {
   return {
     name: NOTE_NAMES[((midi % 12) + 12) % 12],
@@ -23,7 +23,7 @@ export function midiToNote(midi: number): Note {
   };
 }
 
-/** Парсит запись вида "E2", "C#4". */
+/** Parses notation like "E2", "C#4". */
 export function parseNote(note: string): Note {
   const match = /^([A-G]#?)(-?\d)$/.exec(note);
   if (!match) throw new Error(`Не удалось разобрать ноту: ${note}`);
@@ -32,18 +32,18 @@ export function parseNote(note: string): Note {
   return midiToNote((octave + 1) * 12 + index);
 }
 
-/** Отклонение частоты от целевой в центах. */
+/** Deviation of a frequency from the target, in cents. */
 export function centsOff(frequency: number, target: number): number {
   return 1200 * Math.log2(frequency / target);
 }
 
-/** Ближайшая нота хроматической шкалы и отклонение от неё. */
+/** Nearest note of the chromatic scale and the deviation from it. */
 export function frequencyToNote(frequency: number, a4 = 440): { note: Note; cents: number } {
   const midi = Math.round(69 + 12 * Math.log2(frequency / a4));
   return { note: midiToNote(midi), cents: centsOff(frequency, midiToFrequency(midi, a4)) };
 }
 
-/** Ближайшая струна строя и отклонение от неё. */
+/** Nearest string of the tuning and the deviation from it. */
 export function nearestString(
   frequency: number,
   strings: readonly Note[],

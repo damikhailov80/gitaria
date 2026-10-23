@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { getSessionUser } from "@/lib/session";
 import { HeaderBar } from "./HeaderBar";
 
-/** Шапка сайта — одна на всех страницах: гостю «Войти», вошедшему — аватар. */
+/** Site header — the same on all pages: «Войти» (Sign in) for a guest, an avatar for a signed-in user. */
 export function Header() {
   return (
     <Suspense fallback={<HeaderBar />}>

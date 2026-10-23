@@ -15,7 +15,7 @@ const filters: { value: MaterialType | "ALL"; label: string }[] = [
 
 const normalize = (s: string) => s.toLowerCase().replaceAll("ё", "е").trim();
 
-/** favoriteIds — избранное вошедшего пользователя; без него кнопки избранного не показываются. */
+/** favoriteIds — the signed-in user's favorites; without it the favorite buttons are not shown. */
 export function MaterialsCatalog({ favoriteIds }: { favoriteIds?: string[] }) {
   const [filter, setFilter] = useState<MaterialType | "ALL">("ALL");
   const [query, setQuery] = useState("");

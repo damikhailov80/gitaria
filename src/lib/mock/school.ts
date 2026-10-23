@@ -11,7 +11,7 @@ export const history = [
   { date: "Сейчас", text: `Онлайн-курс из ${allLessons.length} уроков`, marker: "ring" },
 ] as const;
 
-/** Telegram преподавателя: туда же ведёт запись на офлайн-урок. */
+/** The teacher's Telegram: booking an offline lesson leads there too. */
 export const telegramHref = "https://t.me/+m1xhg4wdp09mMDRi";
 
 export const socials = [
@@ -44,7 +44,7 @@ export const socials = [
 
 export type SocialId = (typeof socials)[number]["id"];
 
-/** Контакт для запросов о персональных данных (страница /privacy). */
+/** Contact for personal data requests (the /privacy page). */
 export const privacyContact = {
   email: "natahasim.ns@gmail.com",
 };

@@ -5,7 +5,7 @@ import type { Material } from "@/lib/types";
 import { Icon } from "./Icon";
 import styles from "./VideoDialog.module.css";
 
-/** Модальное окно с плеером YouTube. Плеер есть в DOM, только пока окно открыто. */
+/** Modal with a YouTube player. The player is in the DOM only while the modal is open. */
 export function VideoDialog({
   video,
   onClose,
@@ -20,8 +20,8 @@ export function VideoDialog({
     else ref.current?.close();
   }, [video]);
 
-  // Спрятанная при переходе страница (Activity) не должна держать модальное окно открытым:
-  // иначе видимая страница перестаёт реагировать на клики
+  // A page hidden on navigation (Activity) must not keep the modal open:
+  // otherwise the visible page stops responding to clicks
   useLayoutEffect(() => {
     const dialog = ref.current;
     return () => dialog?.close();
@@ -33,7 +33,7 @@ export function VideoDialog({
       className={styles.dialog}
       aria-label={video?.title}
       onClose={onClose}
-      // Клик по фону вокруг окна
+      // Click on the backdrop around the modal
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       {video && (

@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
-/** Помечает аккаунт удалённым и завершает все сессии. Повторный вход через Google его восстановит. */
+/** Marks the account as deleted and ends all sessions. Signing in with Google again restores it. */
 export async function deleteAccount() {
   const user = await getCurrentUser();
   await auth.api.signOut({ headers: await headers() });

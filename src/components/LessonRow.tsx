@@ -5,14 +5,14 @@ import styles from "./LessonRow.module.css";
 
 type Props = {
   lesson: Lesson;
-  /** compact — строка в сайдбаре урока, full — на странице курса */
+  /** compact — a row in the lesson sidebar, full — on the course page */
   variant?: "full" | "compact";
   active?: boolean;
-  /** Замок у урока; по умолчанию — у всех платных */
+  /** Lock on the lesson; by default — on all paid ones */
   locked?: boolean;
-  /** Урок пройден — зелёный номер и галочка */
+  /** Lesson completed — green number and a checkmark */
   completed?: boolean;
-  /** Метка «Бесплатно» (только в full); по умолчанию — у бесплатных уроков */
+  /** The «Бесплатно» (Free) label (full only); by default — on free lessons */
   free?: boolean;
 };
 

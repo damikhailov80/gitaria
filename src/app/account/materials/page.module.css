@@ -2,7 +2,7 @@
   font-size: 64px;
 }
 
-/* Колонка кабинета уже страницы материалов — две карточки в ряд */
+/* The account column is narrower than the materials page — two cards per row */
 ul.grid {
   grid-template-columns: repeat(2, 1fr);
   margin-top: 36px;

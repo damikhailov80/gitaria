@@ -5,7 +5,7 @@ export type Instrument = "guitar" | "ukulele";
 export type Tuning = {
   id: string;
   label: string;
-  /** Подписи струн на кнопках, от толстой к тонкой */
+  /** String labels on the buttons, from thickest to thinnest */
   names: string[];
   strings: Note[];
 };

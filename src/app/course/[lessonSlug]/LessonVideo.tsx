@@ -5,12 +5,12 @@ import { Icon } from "@/components/Icon";
 import type { Lesson } from "@/lib/types";
 import styles from "./page.module.css";
 
-/** Видео урока: до клика — заглушка с кнопкой, после — плеер YouTube на её месте */
+/** Lesson video: before the click — a placeholder with a button, after — the YouTube player in its place */
 export function LessonVideo({ lesson }: { lesson: Lesson }) {
   const [playing, setPlaying] = useState(false);
 
-  // При переходе на другую страницу Next.js не размонтирует её, а прячет (Activity),
-  // и iframe продолжал бы играть — убираем плеер
+  // When navigating to another page, Next.js doesn't unmount this one but hides it (Activity),
+  // and the iframe would keep playing — remove the player
   useLayoutEffect(() => () => setPlaying(false), []);
 
   return (

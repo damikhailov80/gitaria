@@ -2,7 +2,7 @@ import "server-only";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
-// Один клиент на процесс: в dev модуль перезагружается при каждом изменении кода.
+// One client per process: in dev the module reloads on every code change.
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 export const db =

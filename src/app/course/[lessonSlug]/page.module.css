@@ -25,7 +25,7 @@
   list-style: none;
 }
 
-/* Отступ перед следующей группой (вступление → модуль) */
+/* Spacing before the next group (introduction → module) */
 .sideList + :global(.eyebrow) {
   margin-top: 28px;
 }
@@ -81,7 +81,7 @@
   transform: scale(1.04);
 }
 
-/* Закрытый урок: вместо кнопки play — замок */
+/* Locked lesson: a lock instead of the play button */
 .videoLock {
   position: relative;
   display: grid;
@@ -137,7 +137,7 @@
   margin-top: 36px;
 }
 
-/* Без материалов текст занимает всю ширину */
+/* Without materials the text takes the full width */
 .bodySingle {
   grid-template-columns: minmax(0, 1fr);
 }

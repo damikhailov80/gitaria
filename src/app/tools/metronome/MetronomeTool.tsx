@@ -67,7 +67,7 @@ export function MetronomeTool() {
 
   const beats = signatures.find((s) => s.id === settings.signature)!.beats;
 
-  // Настройки из localStorage читаем после монтирования, чтобы не было расхождения с SSR.
+  // Settings are read from localStorage after mount to avoid a mismatch with SSR.
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSettings(loadSettings());
@@ -79,7 +79,7 @@ export function MetronomeTool() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     } catch {
-      // Хранилище недоступно (приватный режим) — просто не запоминаем.
+      // Storage is unavailable (private mode) — just don't remember.
     }
     metronomeRef.current?.update({ bpm: settings.bpm, beatsPerBar: beats, sound: settings.sound });
   }, [settings, beats, loaded]);
@@ -106,7 +106,7 @@ export function MetronomeTool() {
   function tap() {
     const now = performance.now();
     const taps = tapsRef.current;
-    // Пауза дольше 2 секунд — начинаем считать заново.
+    // A pause longer than 2 seconds — start counting again.
     if (taps.length && now - taps[taps.length - 1] > 2000) taps.length = 0;
     taps.push(now);
     const bpm = tapTempo(taps, MIN_BPM, MAX_BPM);

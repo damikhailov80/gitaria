@@ -4,7 +4,7 @@ export type MetronomeOptions = {
   bpm: number;
   beatsPerBar: number;
   sound: ClickSound;
-  /** Вызывается в момент звучания доли (0 — первая доля такта). */
+  /** Called when a beat sounds (0 — the first beat of the bar). */
   onBeat?: (beat: number) => void;
 };
 
@@ -12,8 +12,8 @@ const LOOKAHEAD_MS = 25;
 const SCHEDULE_AHEAD_S = 0.1;
 
 /**
- * Метроном с lookahead-планировщиком: таймер раз в 25 мс ставит звуки
- * на 100 мс вперёд по часам AudioContext, поэтому темп не плывёт.
+ * Metronome with a lookahead scheduler: a timer every 25 ms schedules sounds
+ * 100 ms ahead on the AudioContext clock, so the tempo doesn't drift.
  */
 export class Metronome {
   private ctx: AudioContext | null = null;
@@ -119,7 +119,7 @@ function playWood(ctx: AudioContext, time: number, accent: boolean): void {
 }
 
 
-/** Темп по интервалам между нажатиями Tap (среднее по последним). */
+/** Tempo from intervals between Tap presses (average of the latest). */
 export function tapTempo(taps: number[], min = 30, max = 300): number | null {
   if (taps.length < 2) return null;
   const recent = taps.slice(-5);

@@ -1,4 +1,4 @@
-# Локальная база для разработки: npm run db:up
+# Local development database: npm run db:up
 services:
   db:
     image: postgres:17

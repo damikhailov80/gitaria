@@ -8,7 +8,7 @@ export const metadata = { title: "Пользователи — Gitaria" };
 
 const dateFormat = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric" });
 
-// Данные пользователя читаются из сессии — только внутри <Suspense>.
+// User data is read from the session — only inside <Suspense>.
 export default function UsersPage() {
   return (
     <Suspense>

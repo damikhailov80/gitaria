@@ -58,7 +58,7 @@
   font-size: 15px;
 }
 
-/* На узких экранах строки таблицы — карточки */
+/* On narrow screens table rows become cards */
 @media (max-width: 1100px) {
   .table thead {
     display: none;

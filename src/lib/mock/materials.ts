@@ -1,18 +1,18 @@
 import type { Material, MaterialType } from "@/lib/types";
 import data from "./materials.json";
 
-/** Запись materials.json: ноты — PDF из public/materials, изображения — оттуда же, видео — только с YouTube */
+/** A materials.json entry: sheet music — PDFs from public/materials, images — from there too, videos — YouTube only */
 type MaterialEntry = {
   id: string;
   slug: string;
   type: MaterialType;
   title: string;
   author: string;
-  /** Ноты */
+  /** Sheet music */
   pages?: number;
   file?: string;
   cover?: string;
-  /** Видео */
+  /** Video */
   minutes?: number;
   youtubeId?: string;
 };

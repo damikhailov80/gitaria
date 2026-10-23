@@ -6,9 +6,9 @@ import { allLessons } from "@/lib/mock/course";
 import { getSessionUser } from "@/lib/session";
 
 /**
- * Кнопка «дальше» под уроком: отмечает урок пройденным и ведёт на следующий урок,
- * к оплате (следующий урок платный, подписки нет) или в кабинет (урок последний).
- * Отметка — только у вошедшего и только у открытого ему урока.
+ * The "next" button below a lesson: marks the lesson completed and goes to the next lesson,
+ * to payment (the next lesson is paid and there is no subscription) or to the account (last lesson).
+ * Marked only for a signed-in user and only for a lesson open to them.
  */
 export async function completeLesson(lessonId: string, to: "next" | "checkout") {
   const lesson = allLessons.find((l) => l.id === lessonId);

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import styles from "./page.module.css";
 
-/** Вход и регистрация — только через Google. Ошибку входа Better Auth передаёт в ?error=. */
+/** Sign-in and sign-up — Google only. Better Auth passes the sign-in error in ?error=. */
 export function LoginForm() {
   const error = useSearchParams().get("error");
   const [pending, setPending] = useState(false);

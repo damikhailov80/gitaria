@@ -4,7 +4,7 @@ import { allLessons, course } from "@/lib/mock/course";
 import type { Lesson, Module } from "@/lib/types";
 import styles from "./page.module.css";
 
-/** Левая панель урока: вступление + модуль текущего урока (для вступления — первый модуль) */
+/** Lesson sidebar: introduction + the current lesson's module (for the introduction — the first module) */
 export function LessonSidebar({
   lesson,
   lessonModule,
@@ -13,9 +13,9 @@ export function LessonSidebar({
 }: {
   lesson: Lesson;
   lessonModule: Module | null;
-  /** С подпиской замков у платных уроков нет */
+  /** With a subscription paid lessons have no locks */
   subscribed: boolean;
-  /** id пройденных уроков */
+  /** ids of completed lessons */
   completed: Set<string>;
 }) {
   const sideModule = lessonModule ?? course.modules[0];

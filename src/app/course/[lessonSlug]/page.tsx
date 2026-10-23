@@ -40,11 +40,11 @@ async function LessonContent({ params }: { params: PageProps<"/course/[lessonSlu
   if (!found) notFound();
   const { lesson, module: lessonModule } = found;
 
-  // Платные уроки — только с подпиской; без неё видео, текст и PDF на страницу не попадают
+  // Paid lessons — subscription only; without it the video, text and PDFs don't reach the page
   const user = await getSessionUser();
   const subscribed = !!user?.hasSubscription;
   const hasAccess = lesson.isFree || subscribed;
-  // Урок курса считается пройденным, когда вошедший идёт дальше по кнопке под уроком (у вступления отметки нет)
+  // A course lesson counts as completed when a signed-in user moves on via the button below it (the introduction has no mark)
   const trackProgress = !!user && !!lessonModule;
   const progressRows = user
     ? await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } })

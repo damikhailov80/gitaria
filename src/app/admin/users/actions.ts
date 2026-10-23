@@ -4,8 +4,8 @@ import { refresh } from "next/cache";
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/session";
 
-// Менять можно только обычных пользователей: условие role: "USER" защищает администраторов.
-// Исключение — подписка: её админ может дать и снять себе самому.
+// Only regular users can be changed: the role: "USER" condition protects administrators.
+// The exception is the subscription: an admin can grant and revoke it for themselves.
 
 export async function setSubscription(userId: string, hasSubscription: boolean) {
   const admin = await requireAdmin();
@@ -17,7 +17,7 @@ export async function setSubscription(userId: string, hasSubscription: boolean) 
 export async function setBlocked(userId: string, isBlocked: boolean) {
   await requireAdmin();
   const { count } = await db.user.updateMany({ where: { id: userId, role: "USER" }, data: { isBlocked } });
-  // Заблокированный сразу выходит из кабинета
+  // A blocked user is signed out right away
   if (count && isBlocked) await db.session.deleteMany({ where: { userId } });
   refresh();
 }

@@ -12,7 +12,7 @@ export default function MaterialsPage() {
     <>
       <Header />
       <main className={`container ${styles.page}`}>
-        {/* Пока читается сессия, каталог показывается без кнопок избранного */}
+        {/* While the session is being read, the catalog is shown without favorite buttons */}
         <Suspense fallback={<MaterialsCatalog />}>
           <CatalogWithFavorites />
         </Suspense>

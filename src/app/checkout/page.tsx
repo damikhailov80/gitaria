@@ -28,7 +28,7 @@ export default function CheckoutPage() {
 }
 
 async function CheckoutContent() {
-  // Курс уже куплен — второй раз не продаём
+  // The course is already bought — don't sell it twice
   const user = await getSessionUser();
   if (user?.hasSubscription) redirect("/account");
 

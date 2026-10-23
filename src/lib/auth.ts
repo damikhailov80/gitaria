@@ -5,15 +5,15 @@ import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { db } from "./db";
 
-/** Эти пользователи при первом входе получают роль администратора. */
+/** These users get the admin role on their first sign-in. */
 const ADMIN_EMAILS = ["d.a.mikhailov80@gmail.com", "natahasim.ns@gmail.com"];
 
-/** Код ошибки в /login?error=… при входе заблокированного пользователя. */
+/** Error code in /login?error=… when a blocked user signs in. */
 export const BLOCKED_ERROR = "ACCOUNT_BLOCKED";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, { provider: "postgresql" }),
-  // Вход и регистрация — только через Google
+  // Sign-in and sign-up — Google only
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -47,7 +47,7 @@ export const auth = betterAuth({
           if (user.isBlocked) {
             throw APIError.from("FORBIDDEN", { message: "Аккаунт заблокирован", code: BLOCKED_ERROR });
           }
-          // Удалённый аккаунт восстанавливается при повторном входе
+          // A deleted account is restored on the next sign-in
           if (user.deletedAt) {
             await db.user.update({ where: { id: user.id }, data: { deletedAt: null } });
           }

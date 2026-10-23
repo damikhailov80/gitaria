@@ -9,7 +9,7 @@ import styles from "./page.module.css";
 
 export const metadata = { title: "Мои материалы — Gitaria" };
 
-// Данные пользователя читаются из сессии — только внутри <Suspense>.
+// User data is read from the session — only inside <Suspense>.
 export default function MyMaterialsPage() {
   return (
     <Suspense>
@@ -25,7 +25,7 @@ async function MyMaterials() {
     orderBy: { createdAt: "desc" },
     select: { materialId: true },
   });
-  // Материал могли убрать из списка — такие записи просто не показываем
+  // A material may have been removed from the list — such entries are simply not shown
   const favorites = rows.flatMap((f) => materials.find((m) => m.id === f.materialId) ?? []);
 
   return (

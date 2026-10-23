@@ -1,8 +1,8 @@
 import type { Course, Lesson, Module } from "@/lib/types";
 import data from "./course.json";
 
-/** Структура course.json: вступление + модули → уроки; номера уроков и подписи к материалам считаются здесь.
- *  Материал с youtubeId — видео, с pages — PDF, иначе — изображение. */
+/** Structure of course.json: introduction + modules → lessons; lesson numbers and material captions are computed here.
+ *  A material with youtubeId is a video, with pages — a PDF, otherwise — an image. */
 type LessonData = Omit<Lesson, "id" | "order" | "isFree" | "attachments"> & {
   attachments?: (
     | { id: string; title: string; pages?: number; file: string }
@@ -79,7 +79,7 @@ export function getLesson(slug: string) {
   return { lesson, module: lessonModule };
 }
 
-/** Цена в злотых для отображения: 29900 → «299 zł», с копейками → «299,00 zł» */
+/** Price in złoty for display: 29900 → «299 zł», with grosze → «299,00 zł» */
 export function formatPrice(amount: number, withGrosze = false): string {
   const value = amount / 100;
   return `${value.toLocaleString("ru-RU", {

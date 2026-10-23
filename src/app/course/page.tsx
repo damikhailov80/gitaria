@@ -26,13 +26,13 @@ export default function CoursePage() {
             ))}
           </ul>
 
-          {/* Замки зависят от подписки — список показываем только после загрузки сессии, чтобы они не мигали */}
+          {/* Locks depend on the subscription — show the list only after the session loads so they don't flicker */}
           <Suspense fallback={null}>
             <SessionModuleList />
           </Suspense>
         </div>
 
-        {/* Купившему курс не предлагаем его купить — карточку не показываем и до загрузки сессии */}
+        {/* Don't offer the course to someone who bought it — the card isn't shown before the session loads either */}
         <Suspense fallback={null}>
           <SessionPriceCard />
         </Suspense>
@@ -74,14 +74,14 @@ function PriceCard() {
 async function SessionModuleList() {
   const user = await getSessionUser();
   const subscribed = !!user?.hasSubscription;
-  // Пройденные уроки отмечаем только у тех, кто купил курс
+  // Completed lessons are marked only for those who bought the course
   const rows = subscribed
     ? await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } })
     : [];
   return <ModuleList subscribed={subscribed} completed={new Set(rows.map((r) => r.lessonId))} />;
 }
 
-/** Вступление и модули курса; с подпиской нет замков у платных уроков и метки «Бесплатно» */
+/** Course introduction and modules; with a subscription paid lessons have no locks and no «Бесплатно» (Free) label */
 function ModuleList({ subscribed, completed }: { subscribed: boolean; completed: Set<string> }) {
   return (
     <>

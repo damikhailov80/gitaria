@@ -7,7 +7,7 @@ import styles from "./page.module.css";
 
 export const metadata = { title: "Личный кабинет — Gitaria" };
 
-// Данные пользователя читаются из сессии — только внутри <Suspense>.
+// User data is read from the session — only inside <Suspense>.
 export default function AccountPage() {
   return (
     <Suspense>
@@ -21,7 +21,7 @@ async function AccountContent() {
   const rows = await db.lessonProgress.findMany({ where: { userId: user.id }, select: { lessonId: true } });
   const done = new Set(rows.map((r) => r.lessonId));
   const completed = allLessons.filter((l) => done.has(l.id)).length;
-  // Следующий — первый непройденный урок; если он платный, а подписки нет — предлагаем купить курс
+  // Next is the first uncompleted lesson; if it's paid and there's no subscription — offer to buy the course
   const next = allLessons.find((l) => !done.has(l.id));
   const locked = next && !next.isFree && !user.hasSubscription;
 

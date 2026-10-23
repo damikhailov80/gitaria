@@ -6,7 +6,7 @@ import { VideoDialog } from "@/components/VideoDialog";
 import type { Attachment } from "@/lib/types";
 import styles from "./page.module.css";
 
-/** Материалы урока: файлы открываются в новой вкладке, видео — в модальном окне */
+/** Lesson materials: files open in a new tab, videos — in a modal */
 export function LessonAttachments({ attachments }: { attachments: Attachment[] }) {
   const [playing, setPlaying] = useState<Extract<Attachment, { kind: "video" }> | null>(null);
 

@@ -15,8 +15,8 @@ const links = [
 ];
 
 /**
- * Шапка сайта (клиентская часть). `userName` — имя вошедшего пользователя
- * (аватар), null — гость («Войти»), undefined — сессия ещё загружается.
+ * Site header (client part). `userName` — the signed-in user's name
+ * (avatar), null — a guest («Войти»), undefined — the session is still loading.
  */
 export function HeaderBar({ userName }: { userName?: string | null }) {
   const pathname = usePathname();
@@ -49,7 +49,7 @@ export function HeaderBar({ userName }: { userName?: string | null }) {
             </Link>
           );
         })}
-        {/* Место под «Войти»/аватар резервируется заранее, чтобы меню не дёргалось, пока грузится сессия */}
+        {/* Space for «Войти»/avatar is reserved up front so the menu doesn't jump while the session loads */}
         <div className={styles.actionSlot}>
           <span className={`btn btn-secondary ${styles.action} ${styles.sizer}`} aria-hidden="true">
             Войти

@@ -37,7 +37,7 @@
   margin-top: 16px;
 }
 
-/* Своя стрелка вместо системной: у системной нет отступа от скруглённого края */
+/* Custom arrow instead of the native one: the native one has no inset from the rounded edge */
 .selectWrap::after {
   content: "";
   position: absolute;

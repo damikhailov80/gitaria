@@ -16,8 +16,8 @@ const tagClass: Record<MaterialType, string> = {
 };
 
 /**
- * Сетка карточек материалов. favoriteIds — избранное вошедшего пользователя;
- * без него кнопки избранного не показываются.
+ * Grid of material cards. favoriteIds — the signed-in user's favorites;
+ * without it the favorite buttons are not shown.
  */
 export function MaterialGrid({
   materials,
@@ -35,7 +35,7 @@ export function MaterialGrid({
   );
   const [playing, setPlaying] = useState<Material | null>(null);
 
-  // Страница при уходе прячется (Activity), а не размонтируется — закрываем видео, чтобы оно не играло
+  // On leaving, the page is hidden (Activity), not unmounted — close the video so it doesn't keep playing
   useLayoutEffect(() => () => setPlaying(null), []);
 
   function toggleFavorite(id: string, favorite: boolean) {
@@ -56,7 +56,7 @@ export function MaterialGrid({
                   src={m.cover}
                   alt=""
                   fill
-                  // Обложки первого ряда видны сразу — грузим без lazy
+                  // First-row covers are visible right away — load them without lazy
                   loading={i < 3 ? "eager" : "lazy"}
                   sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 400px"
                   className={styles.cover}
@@ -81,7 +81,7 @@ export function MaterialGrid({
                 )}
               </div>
               <h2 className={styles.cardTitle}>
-                {/* Ссылка или кнопка растянута на всю карточку (::after), кнопка избранного — поверх */}
+                {/* The link or button stretches over the whole card (::after), the favorite button sits on top */}
                 {m.youtubeId ? (
                   <button type="button" className={styles.cardLink} onClick={() => setPlaying(m)}>
                     {m.title}

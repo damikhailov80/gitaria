@@ -1,4 +1,4 @@
-// Модели пользователей и входа (Better Auth). Курс, уроки, покупки — позже.
+// User and sign-in models (Better Auth). Course, lessons, purchases — later.
 
 generator client {
   provider = "prisma-client"
@@ -23,7 +23,7 @@ model User {
   role            Role      @default(USER)
   hasSubscription Boolean   @default(false)
   isBlocked       Boolean   @default(false)
-  /// Пользователь удалил аккаунт сам; при повторном входе через Google аккаунт восстанавливается
+  /// The user deleted the account themselves; signing in with Google again restores it
   deletedAt       DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -83,7 +83,7 @@ model Verification {
   @@map("verification")
 }
 
-/// Избранные материалы. materialId — id из src/lib/mock/materials (материалы пока не в базе)
+/// Favorite materials. materialId — id from src/lib/mock/materials (materials aren't in the database yet)
 model FavoriteMaterial {
   userId     String
   materialId String
@@ -94,7 +94,7 @@ model FavoriteMaterial {
   @@map("favorite_material")
 }
 
-/// Пройденные уроки курса. lessonId — id из src/lib/mock/course (уроки пока не в базе)
+/// Completed course lessons. lessonId — id from src/lib/mock/course (lessons aren't in the database yet)
 model LessonProgress {
   userId      String
   lessonId    String

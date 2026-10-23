@@ -13,7 +13,7 @@ const methods = [
 
 type Method = (typeof methods)[number]["id"];
 
-/** Форма оплаты по макету. Оплата пока не подключена — отправка ничего не делает. */
+/** Payment form per the design. Payment isn't connected yet — submitting does nothing. */
 export function CheckoutForm({ price }: { price: string }) {
   const [method, setMethod] = useState<Method>("card");
 

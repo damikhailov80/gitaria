@@ -4,7 +4,7 @@ import { AccountMenu } from "./AccountMenu";
 import { Header } from "./Header";
 import styles from "./AccountShell.module.css";
 
-/** Шапка и меню кабинета. Без входа — редирект на /login (внутри getCurrentUser). */
+/** Account header and menu. Without sign-in — redirect to /login (inside getCurrentUser). */
 export function AccountShell({ children }: { children: ReactNode }) {
   return (
     <Suspense>

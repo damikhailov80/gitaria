@@ -7,9 +7,9 @@ import { nearestString } from "@/lib/audio/pitch";
 import { tunings, type Instrument } from "@/lib/audio/tunings";
 import styles from "./Tuner.module.css";
 
-/** Допуск «в строю», центы */
+/** "In tune" tolerance, cents */
 const IN_TUNE_CENTS = 5;
-/** Шкала стрелки: ±50 центов → ±72° */
+/** Needle scale: ±50 cents → ±72° */
 const MAX_CENTS = 50;
 const MAX_ANGLE = 72;
 const MIN_CLARITY = 0.9;
@@ -24,7 +24,7 @@ export function Tuner() {
   const [tuningId, setTuningId] = useState("standard");
   const [mic, setMic] = useState<MicState>("off");
   const [reading, setReading] = useState<Reading | null>(null);
-  /** Струна, выбранная вручную; null — автоопределение */
+  /** Manually selected string; null — auto-detect */
   const [manualString, setManualString] = useState<number | null>(null);
   const [tuned, setTuned] = useState<Set<number>>(new Set());
 
@@ -33,11 +33,11 @@ export function Tuner() {
   const audioRef = useRef<{ ctx: AudioContext; stream: MediaStream; raf: number; cleanup: () => void } | null>(
     null,
   );
-  /** Номер последнего запуска: устаревший запуск (ушли со страницы, выключили) не должен включить микрофон */
+  /** Number of the latest start: a stale start (left the page, turned off) must not turn on the microphone */
   const startIdRef = useRef(0);
   const settingsRef = useRef({ strings: tuning.strings, manualString });
   const historyRef = useRef<number[]>([]);
-  /** До этого момента (performance.now) микрофон не слушаем — играет сигнал «настроено» */
+  /** Until this moment (performance.now) the microphone is ignored — the "in tune" beep is playing */
   const mutedUntilRef = useRef(0);
   const inTuneSinceRef = useRef<{ index: number; since: number; confirmed: boolean } | null>(null);
 
@@ -45,11 +45,11 @@ export function Tuner() {
     settingsRef.current = { strings: tuning.strings, manualString };
   }, [tuning, manualString]);
 
-  // Микрофон включается сразу при открытии тюнера.
+  // The microphone turns on as soon as the tuner opens.
   useEffect(() => {
     void startMic();
     return () => stopMic();
-    // Только при монтировании: startMic/stopMic работают через ref-ы.
+    // Only on mount: startMic/stopMic work through refs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,8 +86,8 @@ export function Tuner() {
     }
 
     const ctx = new AudioContext();
-    // При открытии страницы по прямой ссылке браузер может не дать запустить звук
-    // без действия пользователя — тогда запускаем его по первому клику или нажатию клавиши.
+    // When the page is opened via a direct link, the browser may not allow starting audio
+    // without a user gesture — then start it on the first click or key press.
     const resume = () => void ctx.resume();
     const cleanup = () => {
       window.removeEventListener("pointerdown", resume);
@@ -120,7 +120,7 @@ export function Tuner() {
   }
 
   function handlePitch(pitch: number) {
-    // Медиана последних значений сглаживает дрожание стрелки.
+    // The median of recent values smooths needle jitter.
     const history = historyRef.current;
     history.push(pitch);
     if (history.length > 5) history.shift();
@@ -133,8 +133,8 @@ export function Tuner() {
       manualString === null ? nearest.cents : nearestString(frequency, [strings[manualString]]).cents;
     setReading({ frequency, stringIndex, cents });
 
-    // Струна считается настроенной, если полсекунды держится в допуске.
-    // В этот момент звучит сигнал — один раз, пока струна не выйдет из допуска.
+    // A string counts as tuned if it stays within tolerance for half a second.
+    // At that moment a beep plays — once, until the string leaves the tolerance.
     const now = performance.now();
     if (Math.abs(cents) <= IN_TUNE_CENTS) {
       const since = inTuneSinceRef.current;
@@ -144,7 +144,7 @@ export function Tuner() {
         since.confirmed = true;
         setTuned((prev) => (prev.has(stringIndex) ? prev : new Set(prev).add(stringIndex)));
         if (audioRef.current) {
-          // Микрофон слышит сигнал из динамика и сбивает показания — пропускаем это время.
+          // The microphone hears the beep from the speaker and skews readings — skip this time.
           const ms = playInTuneChime(audioRef.current.ctx) * 1000;
           mutedUntilRef.current = performance.now() + ms;
         }
@@ -304,9 +304,9 @@ export function Tuner() {
 }
 
 /**
- * Короткий сигнал «струна настроена».
- * Возвращает, сколько секунд не слушать микрофон: длительность сигнала,
- * задержка вывода звука (у Bluetooth-наушников заметная) и запас на эхо.
+ * A short "string in tune" beep.
+ * Returns how many seconds to ignore the microphone: beep duration,
+ * audio output latency (noticeable with Bluetooth headphones) and a margin for echo.
  */
 function playInTuneChime(ctx: AudioContext): number {
   const start = ctx.currentTime;
@@ -326,7 +326,7 @@ function playInTuneChime(ctx: AudioContext): number {
   return 0.35 + (ctx.baseLatency || 0) + (ctx.outputLatency || 0) + 0.15;
 }
 
-/** Точка на окружности с центром (280, 290); угол 0° — вверх. */
+/** A point on the circle centered at (280, 290); angle 0° points up. */
 function polar(angle: number, r: number) {
   const rad = (angle * Math.PI) / 180;
   return { x: 280 + r * Math.sin(rad), y: 290 - r * Math.cos(rad) };

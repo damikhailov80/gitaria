@@ -1,7 +1,7 @@
 /*
- * Дизайн-токены Gitaria (дизайн-система «Organic» из макета,
- * акцентный цвет приведён к логотипу — public/logo.svg).
- * Все цвета в компонентах — только через эти переменные.
+ * Gitaria design tokens (the "Organic" design system from the design,
+ * the accent color matched to the logo — public/logo.svg).
+ * All colors in components — only via these variables.
  */
 :root {
   --color-neutral-100: #f9f4ed;
@@ -15,7 +15,7 @@
   --color-neutral-800: #33302b;
   --color-neutral-900: #201e1d;
 
-  /* Акцент — красный сердца из логотипа (500 = #bb3723) */
+  /* Accent — the red of the heart in the logo (500 = #bb3723) */
   --color-accent-100: #fdf0ec;
   --color-accent-200: #f9dcd3;
   --color-accent-300: #eeb3a4;
@@ -143,7 +143,7 @@ svg {
   outline-offset: 2px;
 }
 
-/* Контейнер страницы */
+/* Page container */
 .container {
   width: 100%;
   max-width: var(--page-max);
@@ -151,7 +151,7 @@ svg {
   padding: 0 var(--page-gutter);
 }
 
-/* Надзаголовок: «ИСТОРИЯ ШКОЛЫ», «МАТЕРИАЛЫ» */
+/* Eyebrow: «ИСТОРИЯ ШКОЛЫ», «МАТЕРИАЛЫ» */
 .eyebrow {
   font-size: 14px;
   font-weight: 700;
@@ -160,7 +160,7 @@ svg {
   color: var(--color-accent-700);
 }
 
-/* Кнопки */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -208,7 +208,7 @@ svg {
   font-size: 20px;
 }
 
-/* Теги-плашки */
+/* Tag chips */
 .tag {
   display: inline-flex;
   align-items: center;
@@ -237,7 +237,7 @@ svg {
   color: var(--color-accent-800);
 }
 
-/* Сегментный переключатель (радио-кнопки) */
+/* Segmented control (radio buttons) */
 .segmented {
   display: inline-flex;
   border: 1px solid var(--color-divider);
@@ -277,7 +277,7 @@ svg {
   outline-offset: -3px;
 }
 
-/* Поля форм */
+/* Form fields */
 .field {
   display: flex;
   flex-direction: column;
@@ -309,7 +309,7 @@ svg {
   border-color: var(--color-accent);
 }
 
-/* Скрыть визуально, оставить для скринридеров */
+/* Visually hidden, kept for screen readers */
 .sr-only {
   position: absolute;
   width: 1px;

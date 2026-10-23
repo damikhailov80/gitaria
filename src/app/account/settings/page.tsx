@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 
 export const metadata = { title: "Настройки — Gitaria" };
 
-// Данные пользователя читаются из сессии — только внутри <Suspense>.
+// User data is read from the session — only inside <Suspense>.
 export default function SettingsPage() {
   return (
     <Suspense>

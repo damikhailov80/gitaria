@@ -36,7 +36,7 @@
 
 .actionSlot {
   display: grid;
-  min-height: 48px; /* высота аватара */
+  min-height: 48px; /* avatar height */
   align-items: center;
   justify-items: end;
 }

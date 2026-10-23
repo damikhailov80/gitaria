@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./Logo.module.css";
 
-/** Знак Gitaria: сердце с гитарой и нотами (public/logo-mark.svg). */
+/** Gitaria mark: a heart with a guitar and notes (public/logo-mark.svg). */
 export function LogoMark({ size = 48 }: { size?: number }) {
   return (
     <Image

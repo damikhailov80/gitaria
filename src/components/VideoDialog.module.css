@@ -14,7 +14,7 @@
   background: color-mix(in srgb, var(--color-neutral-900) 60%, transparent);
 }
 
-/* Отступы внутри отдельного блока: клик по ним не считается кликом по фону */
+/* Padding lives in a separate block: a click on it doesn't count as a backdrop click */
 .inner {
   padding: 20px 24px 24px;
 }
